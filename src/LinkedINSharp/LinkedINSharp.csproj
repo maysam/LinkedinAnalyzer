@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.103.1\lib\net4\RestSharp.dll</HintPath>
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,9 +51,11 @@
     <Compile Include="LinkedINHttpResponseException.cs" />
     <Compile Include="LinkedINException.cs" />
     <Compile Include="LinkedINRestClient.cs" />
+    <Compile Include="Model\People\Action.cs" />
     <Compile Include="Model\People\BoundAccountType.cs" />
     <Compile Include="Model\People\Certification.cs" />
     <Compile Include="Model\People\CertificationAuthority.cs" />
+    <Compile Include="Model\People\Like.cs" />
     <Compile Include="Model\People\Company.cs" />
     <Compile Include="Model\People\CompanyType.cs" />
     <Compile Include="Model\People\Connections.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Model\People\Language.cs" />
     <Compile Include="Model\People\LanguageName.cs" />
     <Compile Include="Model\People\LanguageProficiency.cs" />
+    <Compile Include="Model\People\Likes.cs" />
     <Compile Include="Model\People\Location.cs" />
     <Compile Include="Model\People\MemberUrlResource.cs" />
     <Compile Include="Model\PagedCollection.cs" />
@@ -85,14 +88,23 @@
     <Compile Include="Model\People\PublicationAuthor.cs" />
     <Compile Include="Model\People\Publisher.cs" />
     <Compile Include="Model\People\Recommendation.cs" />
+    <Compile Include="Model\People\Shares.cs" />
     <Compile Include="Model\People\Skill.cs" />
     <Compile Include="Model\People\SkillName.cs" />
     <Compile Include="Model\People\SkillProficiency.cs" />
     <Compile Include="Model\People\SkillYears.cs" />
+    <Compile Include="Model\People\Property.cs" />
     <Compile Include="Model\People\Suggestion.cs" />
     <Compile Include="Model\People\TelephoneNumber.cs" />
     <Compile Include="Model\People\TwitterAccount.cs" />
+    <Compile Include="Model\People\Update.cs" />
+    <Compile Include="Model\People\UpdateAction.cs" />
+    <Compile Include="Model\People\UpdateComment.cs" />
+    <Compile Include="Model\People\UpdateComments.cs" />
+    <Compile Include="Model\People\UpdateContent.cs" />
+    <Compile Include="Model\People\Updates.cs" />
     <Compile Include="Model\People\Volunteer.cs" />
+    <Compile Include="Model\People\NetworkStats.cs" />
     <Compile Include="OAuth.cs" />
     <Compile Include="Model\OAuth\OAuthToken.cs" />
     <Compile Include="Profile.cs">
@@ -100,6 +112,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\OAuth\RequestToken.cs" />
+    <Compile Include="Shares.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Model\OAuth\OAuth.cd" />
