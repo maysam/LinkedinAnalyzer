@@ -1,0 +1,30 @@
+﻿@model LinkedIN.Application.Model.Profile
+
+@{
+	ViewBag.Title = "Profile";
+	//Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Welcome, @Model.person.FirstName @Model.person.LastName!</h2>
+has @Model.person.Connections.Count connections <img src="@Model.person.PictureUrl" />
+@Html.ActionLink("Logout", "Logout")
+<table>
+    <thead>
+        <tr>
+            <th>Week</th>
+            <th>Hits</th>
+            <th>Likes</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0, j=1; i < 12; i++, j=i+1) {
+		<tr>
+            <td>week @j</td>
+            <td>@Model.hits[i]</td>
+            <td>@Model.likes[i]</td>
+            <td>@Model.comments[i]</td>
+        </tr>
+         }
+    </tbody>
+</table>
