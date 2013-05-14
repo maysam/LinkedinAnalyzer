@@ -139,9 +139,11 @@ namespace LinkedIN
 
             // create the request
             var request = new RestRequest("people/" + idPart + "/network/updates");
-            //  &start=0
-            //  ?scope=self
-            //  &type=SHAR&type=VIRL
+            request.AddParameter("scope", "self");
+            //request.AddParameter("type", "VIRL+SHAR"); //   STAT
+            //request.AddParameter("start", "0");
+            request.AddParameter("count", "250");
+            //  request.AddParameter("after", "34234");
             // &after=987867465 12 weeks ago
 
             // execute the request

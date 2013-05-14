@@ -6,8 +6,12 @@
 }
 
 <h2>Welcome, @Model.person.FirstName @Model.person.LastName!</h2>
-has @Model.person.Connections.Count connections <img src="@Model.person.PictureUrl" />
-@Html.ActionLink("Logout", "Logout")
+<img src="@Model.person.PictureUrl" />
+<br />
+You have @Model.person.NetworkStats.properties[0].Value 1st degree connections 
+<br />
+You have @Model.person.NetworkStats.properties[1].Value 2nd degree connections 
+<br /><br /><br /><br />
 <table>
     <thead>
         <tr>
@@ -28,3 +32,6 @@ has @Model.person.Connections.Count connections <img src="@Model.person.PictureU
          }
     </tbody>
 </table>
+<br /><br /><br /><br />
+<br /><br /><br /><br />
+@Html.ActionLink("Logout", "Logout")

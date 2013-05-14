@@ -94,8 +94,8 @@ namespace LinkedIN.Application.Controllers
                         {
                             if (update.IsLikeable)
                             {
-                                profile.likes[week] += update.NumLikes;                                
                             }
+                            profile.likes[week] += update.NumLikes;
                             if (update.IsCommentable)
                             {
                                 profile.comments[week] += update.UpdateComments.Total;
