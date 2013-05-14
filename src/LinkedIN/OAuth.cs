@@ -45,6 +45,7 @@ namespace LinkedIN
 
 			// execute the request
 			var requestTokenResponse = ExecuteRequest( client, requestTokenRequest );
+            requestTokenRequest.AddParameter("scope", "r_fullprofile rw_nus rw_groups");
 
 			// extract the token from the query string
 			var requestTokenResponseParameters = HttpUtility.ParseQueryString( requestTokenResponse.Content );
