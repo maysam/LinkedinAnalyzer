@@ -1,37 +1,72 @@
 ﻿@model LinkedIN.Application.Model.Profile
-
 @{
-	ViewBag.Title = "Profile";
-	//Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Overview";
+  List<string> comments_rows = new List<string>();
+  List<string> likes_rows = new List<string>();
+  comments_rows.Add("[0, 0]");
+  likes_rows.Add("[0, 0]");
+  var max = 0;
+  for (int i = 0, j=1; i < 12; i++, j=i+1) {
+    if (max<@Model.comments[i]) { max = @Model.comments[i]; }
+    if (max<@Model.likes[i]) { max = @Model.likes[i]; }
+    comments_rows.Add("[" + @j + ", " + @Model.comments[i] + "]");
+    likes_rows.Add("[" + @j + ", " + @Model.likes[i] + "]");
+  } 
+  var comments = "['Week', 'Comments']," + String.Join(",", comments_rows);
+  var likes = "['Week', 'Likes']," + String.Join(",", likes_rows);
+  max += 5;
 }
-
-<h2>Welcome, @Model.person.FirstName @Model.person.LastName!</h2>
-<img src="@Model.person.PictureUrl" />
-<br />
-You have @Model.person.NetworkStats.properties[0].Value 1st degree connections 
-<br />
-You have @Model.person.NetworkStats.properties[1].Value 2nd degree connections 
-<br /><br /><br /><br />
-<table>
-    <thead>
-        <tr>
-            <th>Week</th>
-            <th>Hits</th>
-            <th>Likes</th>
-            <th>Comments</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0, j=1; i < 12; i++, j=i+1) {
-		<tr>
-            <td>week @j</td>
-            <td>@Model.hits[i]</td>
-            <td>@Model.likes[i]</td>
-            <td>@Model.comments[i]</td>
-        </tr>
-         }
-    </tbody>
-</table>
-<br /><br /><br /><br />
-<br /><br /><br /><br />
-@Html.ActionLink("Logout", "Logout")
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var comments_data = google.visualization.arrayToDataTable([@Html.Raw(comments)]);
+        var likes_data = google.visualization.arrayToDataTable([@Html.Raw(likes)]);
+          var options = {
+              title: "People liked you",
+          hAxis: {gridlines: {count: 1}, title: 'Week', titleTextStyle: {bold: true, fontSize:10}, maxValue: 12, showTextEvery: 1},
+          colors: ['#0000ff', '#ff0000'],
+          legend: 'none',
+          vAxis: {maxValue: @max}
+        };
+        var chart_likes = new google.visualization.ColumnChart(document.getElementById('chart_likes'));
+        chart_likes.draw(likes_data, options);
+        var chart_comments = new google.visualization.ColumnChart(document.getElementById('chart_comments'));
+        options['colors'] = ['red', 'blue'];
+        options['title'] = "people talked to you";
+        chart_comments.draw(comments_data, options);
+      }
+    </script>
+<style>
+.minichart {
+  width: 500px;
+  height: 400px;
+  vertical-align: top;
+  display: inline-block;
+}
+.statbox {
+  display: inline-block;
+  vertical-align: top;
+}
+.statbox div {
+    padding: 5px;
+}
+</style>
+<div class="statbox">
+  <div>
+    <h2>Welcome, @Model.person.FirstName @Model.person.LastName!</h2>
+  </div>
+  <div>
+    <img src="@Model.person.PictureUrl" />
+  </div>
+  <div>
+    @Model.person.NetworkStats.properties[0].Value 1st degree connections 
+  </div>
+  <div>
+    @Model.person.NetworkStats.properties[1].Value 2nd degree connections 
+  </div>
+</div>
+<div id="chart_likes" class="minichart"></div>
+<div id="chart_comments" class="minichart"></div>
+@Html.ActionLink("Logout", "Logout", "Home", null, new { @style="float: right;" })
