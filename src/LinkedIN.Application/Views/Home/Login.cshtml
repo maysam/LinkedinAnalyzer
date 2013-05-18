@@ -2,6 +2,6 @@
 	ViewBag.Title = "Login";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Login using LinkedIN</h2>
-@Html.ActionLink("Login with LinkedIN", "Login")
+<a href="@Url.Action("Login", "Home")">
+    <img src="../../Content/js-signin.png" />
+</a>
