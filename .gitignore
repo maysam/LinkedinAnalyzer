@@ -21,3 +21,4 @@ packages/
 src/B*
 src/_*
 src/U*
+*.zip
