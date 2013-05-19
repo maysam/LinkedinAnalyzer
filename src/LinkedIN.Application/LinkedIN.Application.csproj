@@ -75,7 +75,6 @@
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\bootstrap\js\bootstrap.js" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Content\jquery.js" />
     <Content Include="Content\js-signin.png" />
     <Content Include="Content\logo_abrantix.png" />
     <Content Include="Global.asax" />
@@ -89,9 +88,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap\img\Thumbs.db" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LinkedIN\LinkedIN.csproj">
       <Project>{4E33191D-F3BA-40C7-B54C-4E694D743F6D}</Project>
       <Name>LinkedIN</Name>
@@ -99,9 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Login.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
