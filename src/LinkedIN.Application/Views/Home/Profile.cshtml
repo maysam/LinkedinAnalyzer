@@ -5,179 +5,116 @@
 
   List<string> comments_rows = new List<string>();
   List<string> likes_rows = new List<string>();
-  // comments_rows.Add("[0, 0]");
-  // likes_rows.Add("[0, 0]");
-  // var max = 0;
   for (int i = 0, j = 1; i < 12; i++, j = i + 1)
   {
-      // if (max < @Model.comments[i]) { max = @Model.comments[i]; }
-      // if (max < @Model.likes[i]) { max = @Model.likes[i]; }
       comments_rows.Add("[" + @j + ", " + @Model.comments[i] + "]");
       likes_rows.Add("[" + @j + ", " + @Model.likes[i] + "]");
   }
   var comments = "['Week', 'Comments']," + String.Join(",", comments_rows);
   var likes = "['Week', 'Likes']," + String.Join(",", likes_rows);
+  DateTime month = @DateTime.Now;
+  DateTime week = @DateTime.Now;
 }
 @section Scripts {
-           <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 }
-    <script type="text/javascript">
-        var comments_data, likes_data, options, chart_likes, chart_comments;
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        comments_data = google.visualization.arrayToDataTable([@Html.Raw(comments)]);
-        likes_data = google.visualization.arrayToDataTable([@Html.Raw(likes)]);
-        options = {
-            title: "People liked you",
-            fontSize: 12,
-            titleTextStyle: {fontSize: 20, bold: true},
-            hAxis: { title: 'Week', textStyle: {fontSize:10, bold: true} },
-            colors: ["#0D2040"],
-            legend: "none",
-            vAxis: {maxValue: 11},
-            width: '100%', height: 400,
-            chartArea: {width: 450}
-        };
-        chart_likes = new google.visualization.ColumnChart(document.getElementById('chart_likes'));
-        chart_likes.draw(likes_data, options);
-        chart_comments = new google.visualization.ColumnChart(document.getElementById('chart_comments'));
-        options['colors'] = ["#FD9C19"];
-        options['title'] = "People talked to you";
-        chart_comments.draw(comments_data, options);
-      }
-    </script>
+<script type="text/javascript">
+  var comments_data, likes_data, options, chart_likes, chart_comments;
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    comments_data = google.visualization.arrayToDataTable([@Html.Raw(comments)]);
+    likes_data = google.visualization.arrayToDataTable([@Html.Raw(likes)]);
+    options = {
+        title: "People liked you",
+        fontSize: 12,
+        titleTextStyle: {fontSize: 20, bold: true},
+        hAxis: { title: 'Week', textStyle: {fontSize:10, bold: true} },
+        colors: ["#0D2040"],
+        legend: "none",
+        vAxis: {maxValue: 11},
+        width: '100%', height: 400,
+        chartArea: {width: 450}
+    };
+    chart_likes = new google.visualization.ColumnChart(document.getElementById('chart_likes'));
+    chart_likes.draw(likes_data, options);
+    chart_comments = new google.visualization.ColumnChart(document.getElementById('chart_comments'));
+    options['colors'] = ["#FD9C19"];
+    options['title'] = "People talked to you";
+    chart_comments.draw(comments_data, options);
+  }
+</script>
 <div class="container-fluid">
-<div class="row-fluid">
-    <div class="span5 offset1">
-        <h1 class="pull-left">LinkedIn Matrix Analyzer</h1>
-        <h2 class="pull-left lead">Overview @DateTime.Today.ToString("dd.MM.yyyy")</h2>
-    </div>
-    <div class="span6">
-        <img class="pull-right" src="../../Content/logo_abrantix.png" />
-    </div>
-</div>
-
-<div class="row-fluid">
-    <div class="span4">
-        <div id="chart_likes" ></div>
-    </div>
-    <div class="span4">
-        <div id="chart_comments" ></div>
-    </div>
-    <div class="span4">
-    <div class="row-fluid" style="margin-top:15%">
-      <h3 class="span4">@Model.person.NetworkStats.properties[0].Value</h2>
-      <h4 class="span8">Direct Contacts</h3>
-    </div>
-    <div class="row-fluid" style="margin-top:15%">
-      <h3 class="span4">@Model.person.NetworkStats.properties[1].Value</h3>
-      <h4 class="span8">Second Degree Contacts</h4>
-    </div>
+  <div class="row-fluid">
+      <div class="span5 offset1">
+          <h1 class="pull-left">LinkedIn Matrix Analyzer</h1>
+          <h2 class="pull-left lead">Overview @DateTime.Today.ToString("dd.MM.yyyy")</h2>
+      </div>
+      <div class="span6">
+          <img class="pull-right" src="../../Content/logo_abrantix.png" />
+      </div>
   </div>
-
+  <div class="row-fluid">
+      <div class="span4">
+          <div id="chart_likes" ></div>
+      </div>
+      <div class="span4">
+          <div id="chart_comments" ></div>
+      </div>
+      <div class="span4">
+      <div class="row-fluid" style="margin-top:15%">
+        <h3 class="span4">@Model.person.NetworkStats.properties[0].Value</h2>
+        <h4 class="span8">Direct Contacts</h3>
+      </div>
+      <div class="row-fluid" style="margin-top:15%">
+        <h3 class="span4">@Model.person.NetworkStats.properties[1].Value</h3>
+        <h4 class="span8">Second Degree Contacts</h4>
+      </div>
+  </div>
 </div>
 
-</div>
-
-
-<div class="accordion">
+<div class="accordion" id="monthes">
     <h1>Timeline:</h1>
-    @for (int i = 1; i <= 12; i++) {
-  
+    @for (int i = 1; i <= 4 ; i++, month = month.AddMonths(-1)) {
     <div class="accordion accordion-group">
       <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-          Current Month (31 likes +70% 42 comments -32%)
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#monthes" href="#month-@i">
+          @if (i==1) {
+            @:Current Month (31 likes +70% 42 comments -32%)
+          } else {
+            @:@month.ToString("MMMM yyyy") (31 likes +70% 42 comments -32%)
+          }
         </a>
       </div>
-      <div id="collapseOne" class="accordion-body collapse in">
-        <div class="accordion-inner accordion">
+      <div id="month-@i" class="accordion-body collapse @(i==1? "in" : "")">
+        <div class="accordion-inner accordion" id="month-@i">
+         @for (int j = 1 ; (week.Month == month.Month && week.Day>3) || (week.Month > month.Month && week.Day<=3) ; j++, week = week.AddDays(-7))
+         {        
           <div class="accordion-group">
             <div class="accordion-heading"> 
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                Current Week (31 likes +70% 42 comments -32%)
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#month-@i" href="#month-@i-week-@j">
+                @if (j==1 && i==1) {
+                  @:Current Week (31 likes +70% 42 comments -32%)
+                } else {
+                  @:@week.AddDays(-6).ToString("dd.MM.yyyy") - @week.ToString("dd.MM.yyyy") (31 likes +70% 42 comments -32%)
+                }
               </a>
             </div>
-            <div id="collapseOne" class="accordion-body collapse in">
+            <div class="accordion-body collapse @(j==1? "in" : "")" id="month-@i-week-@j">
               <div class="accordion-inner">
                 <div class="accordion accordion-group">
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row"><a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                  <div class="row">comment in <a>group discussion xxx</a> (0 likes, 0 comments)</div>
+                @for (int k = 1; k <= 1; k++) {    
+                  <div class="">status update xxx (0 likes, 0 comments)</div>
+                  <div class=""><a>group discussion xxx</a> (0 likes, 0 comments)</div>
+                  <div class="">comment in <a>group discussion xxx</a> (0 likes, 0 comments)</div>
+                }
                 </div>
               </div>
             </div>
           </div>
-          <div class="accordion-group">
-            <div class="accordion-heading"> 
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                 01.04.2013 - 07.04.2013 (31 likes +70% 42 comments -32%)
-              </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse in">
-              <div class="accordion-inner">
-                <div class="accordion accordion-group">
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row"><a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                  <div class="row">comment in <a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          }
         </div>
       </div>
     </div>
     }
-    <div class="accordion accordion-group">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-          March 2013 (31 likes +70% 42 comments -32%)
-        </a>
-      </div>
-      <div id="collapseOne" class="accordion-body collapse in">
-        <div class="accordion-inner accordion">
-          <div class="accordion-group">
-            <div class="accordion-heading"> 
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                Current Week (31 likes +70% 42 comments -32%)
-              </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse in">
-              <div class="accordion-inner">
-                <div class="accordion accordion-group">
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row"><a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                  <div class="row">comment in <a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="accordion-group">
-            <div class="accordion-heading"> 
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                 01.04.2013 - 07.04.2013 (31 likes +70% 42 comments -32%)
-              </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse in">
-              <div class="accordion-inner">
-                <div class="accordion accordion-group">
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row">status update xxx (0 likes, 0 comments)</div>
-                  <div class="row"><a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                  <div class="row">comment in <a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 </div>
