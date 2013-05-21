@@ -35,7 +35,7 @@ namespace LinkedIN.Application.Controllers
                     all += "mfeed-rss-url,following,job-bookmarks,group-memberships,suggestions,date-of-birth,main-address,member-url-resources,";
                     all += "picture-url,public-profile-url,related-profile-views";
                     var fields = new[] { new ProfileField(all) };
-                    var recent_updates = client.RetrieveCurrentMemberUpdates();
+                    var recent_updates = client.RetrieveCurrentMemberUpdates("STAT");
                     
                     var l_profile = client.RetrieveCurrentMemberProfile(fields);
 
@@ -46,13 +46,12 @@ namespace LinkedIN.Application.Controllers
                     //                  l_profile.NumberOfConnections = l_profile.Connections.Total;
                     //var ns = client.RetrieveCurrentMemberNetworkStats(fields);
                     Profile profile = new Profile(l_profile);
+                    profile.processPercentages();
                     var ns = l_profile.NetworkStats;
                     profile.firstDegreeConnections = ns.properties[0].Value;
                     profile.secondDegreeConnections = ns.properties[1].Value;
                     profile.likes = new int[100];
                     profile.comments = new int[100];
-                    profile.hits = new int[100];
-
                     DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
                     Calendar cal = dfi.Calendar;
 
@@ -85,25 +84,14 @@ namespace LinkedIN.Application.Controllers
                         {
                             continue;
                         }
-                        if (update.UpdateType == "VIRL")
+                        if (update.IsLikeable)
                         {
-
-                            
                         }
-           //             if (update.UpdateType == "SHAR")
+                        profile.likes[week] += update.NumLikes;
+                        if (update.IsCommentable)
                         {
-                            if (update.IsLikeable)
-                            {
-                            }
-                            profile.likes[week] += update.NumLikes;
-                            if (update.IsCommentable)
-                            {
-                                profile.comments[week] += update.UpdateComments.Total;
-                            }
-                            profile.hits[week] += 1;
-                            System.Diagnostics.Debug.WriteLine(update.UpdateType);
-
-                        }
+                            profile.comments[week] += update.UpdateComments.Total;
+                        }                        
                     }
                       
 					// return the view

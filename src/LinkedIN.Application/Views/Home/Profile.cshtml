@@ -1,19 +1,17 @@
 ﻿@model LinkedIN.Application.Model.Profile
 @{
-  Layout = "~/Views/Shared/_Layout.cshtml";
-	ViewBag.Title = "LinkedIn Matrix Analyzer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "LinkedIn Matrix Analyzer";
 
-  List<string> comments_rows = new List<string>();
-  List<string> likes_rows = new List<string>();
-  for (int i = 0, j = 1; i < 12; i++, j = i + 1)
-  {
-      comments_rows.Add("[" + @j + ", " + @Model.comments[i] + "]");
-      likes_rows.Add("[" + @j + ", " + @Model.likes[i] + "]");
-  }
-  var comments = "['Week', 'Comments']," + String.Join(",", comments_rows);
-  var likes = "['Week', 'Likes']," + String.Join(",", likes_rows);
-  DateTime month = @DateTime.Now;
-  DateTime week = @DateTime.Now;
+    List<string> comments_rows = new List<string>();
+    List<string> likes_rows = new List<string>();
+    for (int i = 0, j = 1; i < 12; i++, j = i + 1)
+    {
+        comments_rows.Add("[" + @j + ", " + @Model.comments[i] + "]");
+        likes_rows.Add("[" + @j + ", " + @Model.likes[i] + "]");
+    }
+    var comments = "['Week', 'Comments']," + String.Join(",", comments_rows);
+    var likes = "['Week', 'Likes']," + String.Join(",", likes_rows);
 }
 @section Scripts {
  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -63,8 +61,8 @@
       </div>
       <div class="span4">
       <div class="row-fluid" style="margin-top:15%">
-        <h3 class="span4">@Model.person.NetworkStats.properties[0].Value</h2>
-        <h4 class="span8">Direct Contacts</h3>
+        <h3 class="span4">@Model.person.NetworkStats.properties[0].Value</h3>
+        <h4 class="span8">Direct Contacts</h4>
       </div>
       <div class="row-fluid" style="margin-top:15%">
         <h3 class="span4">@Model.person.NetworkStats.properties[1].Value</h3>
@@ -72,38 +70,44 @@
       </div>
   </div>
 </div>
-
+</div>
+@helper formatPercentage(int number)
+{
+    if(number>0) {
+        <span style="color:green">+@number%</span>
+    }
+    else
+    {
+        <span style="color:red">@number%</span>
+    }
+}
 <div class="accordion" id="monthes">
     <h1>Timeline:</h1>
-    @for (int i = 1; i <= 4 ; i++, month = month.AddMonths(-1)) {
+    @foreach (LinkedIN.Application.Model.Data month in Model.monthes)
+    { 
     <div class="accordion accordion-group">
       <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#monthes" href="#month-@i">
-          @if (i==1) {
-            @:Current Month (31 likes +70% 42 comments -32%)
-          } else {
-            @:@month.ToString("MMMM yyyy") (31 likes +70% 42 comments -32%)
-          }
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#monthes" href="#month-@month.month">
+            @month.name (@month.likes likes @formatPercentage(month.likesPercentage) @month.comments comments @formatPercentage(month.commentsPercentage))
         </a>
       </div>
-      <div id="month-@i" class="accordion-body collapse @(i==1? "in" : "")">
-        <div class="accordion-inner accordion" id="month-@i">
-         @for (int j = 1 ; (week.Month == month.Month && week.Day>3) || (week.Month > month.Month && week.Day<=3) ; j++, week = week.AddDays(-7))
-         {        
+      <div id="month-@month.month" class="accordion-body collapse @(month.index == 1 ? "in" : "")">
+        <div class="accordion-inner accordion" id="parent-month-@month.month">
+            @foreach (LinkedIN.Application.Model.Data week in Model.weeks)
+            {
+                if (@month.month == @week.month)
+                {        
           <div class="accordion-group">
             <div class="accordion-heading"> 
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#month-@i" href="#month-@i-week-@j">
-                @if (j==1 && i==1) {
-                  @:Current Week (31 likes +70% 42 comments -32%)
-                } else {
-                  @:@week.AddDays(-6).ToString("dd.MM.yyyy") - @week.ToString("dd.MM.yyyy") (31 likes +70% 42 comments -32%)
-                }
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#parent-month-@month.month" href="#month-@month.month-week-@week.week">
+                  @week.name (@week.likes likes @formatPercentage(week.likesPercentage) @week.comments comments @formatPercentage(week.commentsPercentage))
               </a>
             </div>
-            <div class="accordion-body collapse @(j==1? "in" : "")" id="month-@i-week-@j">
+            <div class="accordion-body collapse @(week.week == 1 ? "in" : "")" id="month-@month.month-week-@week.week">
               <div class="accordion-inner">
                 <div class="accordion accordion-group">
-                @for (int k = 1; k <= 1; k++) {    
+                @for (int k = 1; k <= 1; k++)
+                {    
                   <div class="">status update xxx (0 likes, 0 comments)</div>
                   <div class=""><a>group discussion xxx</a> (0 likes, 0 comments)</div>
                   <div class="">comment in <a>group discussion xxx</a> (0 likes, 0 comments)</div>
@@ -112,7 +116,8 @@
               </div>
             </div>
           </div>
-          }
+                }
+            }
         </div>
       </div>
     </div>
