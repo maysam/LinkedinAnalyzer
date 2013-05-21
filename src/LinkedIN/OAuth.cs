@@ -42,10 +42,10 @@ namespace LinkedIN
 
 			// create the request
 			var requestTokenRequest = new RestRequest( "requestToken" );
+      requestTokenRequest.AddParameter("scope", "r_fullprofile rw_nus rw_groups");
 
 			// execute the request
 			var requestTokenResponse = ExecuteRequest( client, requestTokenRequest );
-            requestTokenRequest.AddParameter("scope", "r_fullprofile rw_nus rw_groups");
 
 			// extract the token from the query string
 			var requestTokenResponseParameters = HttpUtility.ParseQueryString( requestTokenResponse.Content );
