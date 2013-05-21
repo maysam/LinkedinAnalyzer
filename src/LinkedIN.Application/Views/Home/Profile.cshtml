@@ -31,8 +31,8 @@
         colors: ["#0D2040"],
         legend: "none",
         vAxis: {maxValue: 11},
-        width: '100%', height: 400,
-        chartArea: {width: 450}
+        width: '80%', height: 400,
+        chartArea: {width: 400}
     };
     chart_likes = new google.visualization.ColumnChart(document.getElementById('chart_likes'));
     chart_likes.draw(likes_data, options);
@@ -58,12 +58,8 @@
 </div>
 <div class="container">
   <div class="row-fluid well">
-    <div class="span5">
-      <div id="chart_likes" ></div>
-    </div>
-    <div class="span5">
-      <div id="chart_comments" ></div>
-    </div>
+    <div class="span5" id="chart_likes"></div>
+    <div class="span5" id="chart_comments" ></div>
     <div class="span2">
       <div class="container well span12">
         <h3 class="span12">@Model.person.NetworkStats.properties[0].Value</h3>
