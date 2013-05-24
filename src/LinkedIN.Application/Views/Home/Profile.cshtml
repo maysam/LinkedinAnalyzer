@@ -82,9 +82,9 @@
         <span style="color:red">@number%</span>
     }
 }
-<div class="accordion" id="monthes">
+<div class="accordion container" id="monthes">
     <h1>Timeline:</h1>
-    @foreach (LinkedIN.Application.Model.Data month in Model.monthes)
+    @foreach (LinkedIN.Application.Model.Data month in Model.monthes.Values)
     { 
     <div class="accordion accordion-group">
       <div class="accordion-heading">
@@ -92,11 +92,11 @@
             @month.name (@month.likes likes @formatPercentage(month.likesPercentage) @month.comments comments @formatPercentage(month.commentsPercentage))
         </a>
       </div>
-      <div id="month-@month.month" class="accordion-body collapse @(month.index == 1 ? "in" : "")">
+      <div id="month-@month.month" class="accordion-body collapse in @(month.index == 1 ? "" : "")">
         <div class="accordion-inner accordion" id="parent-month-@month.month">
-            @foreach (LinkedIN.Application.Model.Data week in Model.weeks)
+            @foreach (LinkedIN.Application.Model.Data week in Model.weeks.Values)
             {
-                if (@month.month == @week.month)
+                if (@month.month == @week.month && week.activities.Count > 0)
                 {        
           <div class="accordion-group">
             <div class="accordion-heading"> 
@@ -104,14 +104,26 @@
                   @week.name (@week.likes likes @formatPercentage(week.likesPercentage) @week.comments comments @formatPercentage(week.commentsPercentage))
               </a>
             </div>
-            <div class="accordion-body collapse @(week.week == 1 ? "in" : "")" id="month-@month.month-week-@week.week">
+            <div class="accordion-body collapse in @(week.week == 1 ? "" : "")" id="month-@month.month-week-@week.week">
               <div class="accordion-inner">
                 <div class="accordion accordion-group">
-                @for (int k = 1; k <= 1; k++)
-                {    
-                  <div class="">status update xxx (0 likes, 0 comments)</div>
-                  <div class=""><a>group discussion xxx</a> (0 likes, 0 comments)</div>
-                  <div class="">comment in <a>group discussion xxx</a> (0 likes, 0 comments)</div>
+                @foreach (LinkedIN.Application.Model.Data activity in week.activities)
+                {
+                    switch (activity.type)
+                    {
+                        case 0:                            
+                  <div class="">status update @activity.name (@activity.likes likes, @activity.comments comments)</div>
+                            break;
+                        case 1:
+                  <div class=""><a target="_blank" href="@activity.href">group discussion "@activity.name"</a> (@activity.likes likes, @activity.comments comments)</div>
+                            break;
+                        case 2:
+                  <div class="">comment in <a target="_blank" href="@activity.href">group discussion "@activity.name"</a> (@activity.likes likes, @activity.comments comments)</div>
+                            break;
+                        default:
+                            break;
+                    }
+                  
                 }
                 </div>
               </div>
