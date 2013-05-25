@@ -3,13 +3,18 @@ using LinkedIN.Application.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Threading;
+using System.Globalization;
 
 namespace LinkedIN.Application.Model
 {
     public class Data
     {
-        public Data(int _type, string str, int _likes, int _comments, string _href)
+        public Data(int _type, string str, int _likes, int _comments, string _href, DateTime _date)
         {
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
+            date = _date.ToShortDateString();
             type = _type;
             name = str;
             likes = _likes;
@@ -31,6 +36,7 @@ namespace LinkedIN.Application.Model
         public int week;
         public int index;
         public int type;
+        public string date;
         public string name;
         public string href = "http://blog.abrantix.com/";
         public int likes = 0, comments = 0;
@@ -42,10 +48,10 @@ namespace LinkedIN.Application.Model
             comments += _comments;
         }
 
-        internal void addRaw(string str, int type, int _likes, int _comments, string _href)
+        internal void addRaw(string str, int type, int _likes, int _comments, string _href, DateTime _date)
         {
             addStatistics(_likes, _comments);
-            activities.Add(new Data(type, str, _likes, _comments, _href));
+            activities.Add(new Data(type, str, _likes, _comments, _href, _date));
         }
     }
 
@@ -55,7 +61,7 @@ namespace LinkedIN.Application.Model
             int i = DateTime.Now.Month - date.Month + 1;
             int k = (int)Math.Floor((double)(DateTime.Now.Subtract(date).Days / 7));
             monthes[i].addStatistics(likes, comments);
-            weeks[k].addRaw(str, type, likes, comments, href);
+            weeks[k].addRaw(str, type, likes, comments, href, date);
         }
         public Profile(Person l_profile)
         {
