@@ -44,28 +44,17 @@
 </script>
 <div class="container">
   <div class="row-fluid well">
-    <div class="span1">
-      <img src="@Model.person.PictureUrl" />
-    </div>
-    <div class="span5">
-      <h1 class="pull-left">LinkedIn Matrix Analyzer</h1>
-      <h2 class="pull-left lead">Overview @DateTime.Today.ToString("dd.MM.yyyy")</h2>
-    </div>
-    <div class="span6">
-      <img class="pull-right" src="../../Content/logo_abrantix.png" />
-    </div>
-  </div>
-</div>
-<div class="container">
-  <div class="row-fluid well">
     <div class="span5" id="chart_likes"></div>
     <div class="span5" id="chart_comments" ></div>
     <div class="span2">
-      <div class="container well span12">
+      <div class="container well span12 pagination-centered">
+        <img src="@Model.person.PictureUrl" />
+      </div>
+      <div class="container well span12 pagination-centered">
         <h3 class="span12">@Model.person.NetworkStats.properties[0].Value</h3>
         <h4 class="span12">Direct Contacts</h4>
       </div>
-      <div class="container well span12">
+      <div class="container well span12 pagination-centered">
         <h3 class="span12">@Model.person.NetworkStats.properties[1].Value</h3>
         <h4 class="span12">Second Degree Contacts</h4>
       </div>
