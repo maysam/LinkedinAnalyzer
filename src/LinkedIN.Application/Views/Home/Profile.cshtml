@@ -96,8 +96,8 @@
               </a>
             </div>
             <div class="accordion-body collapse @(week.week == 1 ? "in" : "")" id="month-@month.month-week-@week.week">
-              <div class="accordion-inner" style="border: none;">
-                <div class="accordion accordion-group">
+              <div class="accordion-inner">
+                <div class="accordion accordion-group"  style="border: none;">
                 @foreach (LinkedIN.Application.Model.Data activity in week.activities)
                 {
                     <div class="well well-small">@activity.date
