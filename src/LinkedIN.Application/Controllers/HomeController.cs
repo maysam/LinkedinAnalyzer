@@ -9,8 +9,8 @@ namespace LinkedIN.Application.Controllers
 {
 	public class HomeController : Controller
 	{
-        private const string consumerKey = "6e1g30dpzrp9";
-        private const string consumerSecret = "OvzgUSvvbF6qeLXv";
+    private const string consumerKey = "6e1g30dpzrp9";
+    private const string consumerSecret = "OvzgUSvvbF6qeLXv";
 		public ActionResult Index()
 		{
 			var accessToken = (AccessToken) Session["accessToken"];
@@ -18,8 +18,8 @@ namespace LinkedIN.Application.Controllers
 			{
 				// create the client
 				var client = new LinkedINRestClient(consumerKey, consumerSecret, accessToken);
-                
-              
+
+
 				// retrieve the profile
 				try
 				{
@@ -36,7 +36,7 @@ namespace LinkedIN.Application.Controllers
                     all += "picture-url,public-profile-url,related-profile-views";
                     var fields = new[] { new ProfileField(all) };
                     var recent_updates = client.RetrieveCurrentMemberUpdates("STAT");
-                    
+
                     var l_profile = client.RetrieveCurrentMemberProfile(fields);
 
 
@@ -50,8 +50,6 @@ namespace LinkedIN.Application.Controllers
                     var ns = l_profile.NetworkStats;
                     profile.firstDegreeConnections = ns.properties[0].Value;
                     profile.secondDegreeConnections = ns.properties[1].Value;
-                    profile.likes = new int[100];
-                    profile.comments = new int[100];
                     DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
                     Calendar cal = dfi.Calendar;
 
@@ -60,40 +58,12 @@ namespace LinkedIN.Application.Controllers
                     for (int i = 0; i < recent_updates.Count; i++)
                     {
                         var update = recent_updates[i];
-                        //configure week
-                         
-                        DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                        double MaxUnixSeconds = (DateTime.MaxValue - UnixEpoch).TotalSeconds;
-                        double unixTimeStamp = update.TimeStamp;
-
-                        DateTime dd = unixTimeStamp > MaxUnixSeconds
-                           ? UnixEpoch.AddMilliseconds(unixTimeStamp).ToLocalTime()
-                           : UnixEpoch.AddSeconds(unixTimeStamp).ToLocalTime();
-
-
-                        var update_week = cal.GetWeekOfYear(dd, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
-                        
-                        long ticks = DateTime.Now.Ticks/TimeSpan.TicksPerSecond - update.TimeStamp;
-                        long weekLength = 1000 * 60 * 60 * 24 * 7;
-                        long reminder;
-                        int bweek = (int)Math.DivRem(ticks , weekLength, out reminder);
-                      
-
-                        int week = current_week - update_week;
-                        if (week >= 12)
-                        {
-                            continue;
-                        }
-                        if (update.IsLikeable)
-                        {
-                        }
-                        profile.likes[week] += update.NumLikes;
-                        if (update.IsCommentable)
-                        {
-                            profile.comments[week] += update.UpdateComments.Total;
-                        }                        
+                        //  profile.week[week] = DateTime.Now.AddDays(-7*week).ToString("dd.MM.yyyy");
+                        //  profile.likes[week] += update.NumLikes;
+                        //  if (update.IsCommentable)
+                        //  profile.comments[week] += update.UpdateComments.Total;
                     }
-                      
+
 					// return the view
 					return View("Profile", profile);
 				}
@@ -110,6 +80,7 @@ namespace LinkedIN.Application.Controllers
 			// return the unauthorized view
 			return View("Login");
 		}
+
 		public ActionResult Logout()
 		{
 			// delete the access token from the session

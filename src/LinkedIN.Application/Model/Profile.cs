@@ -57,11 +57,14 @@ namespace LinkedIN.Application.Model
 
     public class Profile
     {
-        public void add(DateTime date, String str, int likes, int comments, int type, string href) {
+        public void add(DateTime date, String str, int likes, int comments, int type, string href)
+        {
             int i = DateTime.Now.Month - date.Month + 1;
             int k = (int)Math.Floor((double)(DateTime.Now.Subtract(date).Days / 7));
-            monthes[i].addStatistics(likes, comments);
-            weeks[k].addRaw(str, type, likes, comments, href, date);
+            if (monthes.ContainsKey(i))
+                monthes[i].addStatistics(likes, comments);
+            if (weeks.ContainsKey(k))
+                weeks[k].addRaw(str, type, likes, comments, href, date);
         }
         public Profile(Person l_profile)
         {
@@ -91,6 +94,7 @@ namespace LinkedIN.Application.Model
                     weeks.Add(k, week);
                     week.month = _month.Month;
                     week.week = j;
+                    week.date = _week.ToString("dd.MM.yyyy");
                     if (j == 1 && i == 1)
                     {
                         week.name = "Current Week";
@@ -113,8 +117,6 @@ namespace LinkedIN.Application.Model
         public Person person { get; set; }
         public int firstDegreeConnections { get; set; }
         public int secondDegreeConnections { get; set; }
-        public int[] likes { get; set; }
-        public int[] comments { get; set; }
         public SortedDictionary<int,Data> monthes { get; set; }
         public SortedDictionary<int, Data> weeks { get; set; }
         public void processPercentages()

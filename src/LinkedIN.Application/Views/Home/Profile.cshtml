@@ -4,10 +4,10 @@
     ViewBag.Title = "LinkedIn Matrix Analyzer";
     List<string> comments_rows = new List<string>();
     List<string> likes_rows = new List<string>();
-    for (int i = 0, j = 1; i < 12; i++, j = i + 1)
+    foreach (LinkedIN.Application.Model.Data week in @Model.weeks.Values)
     {
-        comments_rows.Add("[" + @j + ", " + @Model.comments[i] + "]");
-        likes_rows.Add("[" + @j + ", " + @Model.likes[i] + "]");
+        comments_rows.Add("['" + @week.date + "', " + @week.comments + "]");
+        likes_rows.Add("['" + @week.date + "', " + @week.likes + "]");
     }
     var comments = "['Week', 'Comments']," + String.Join(",", comments_rows);
     var likes = "['Week', 'Likes']," + String.Join(",", likes_rows);
@@ -26,10 +26,10 @@
         title: "People liked you",
         fontSize: 12,
         titleTextStyle: {fontSize: 20, bold: true},
-        hAxis: { title: 'Week', textStyle: {fontSize:10, bold: true} },
+        hAxis: { title: 'Week', textStyle: {fontSize:10, bold: true}, slantedText: true, slantedTextAngle:45 },
         colors: ["#0D2040"],
         legend: "none",
-        vAxis: {maxValue: 11},
+        // vAxis: {maxValue: 11},
         width: '80%', height: 500,
         chartArea: {width: 400}
     };
@@ -75,7 +75,7 @@
     <h1>Timeline:</h1>
 
     @foreach (LinkedIN.Application.Model.Data month in Model.monthes.Values)
-    { 
+    {
     <div class="accordion accordion-group" style="background-color: white">
       <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#monthes" href="#month-@month.month">
@@ -90,7 +90,7 @@
                 {
                     week.activities.Sort((itemA, itemB) => itemB.date.CompareTo(itemA.date));
           <div class="accordion-group">
-            <div class="accordion-heading"> 
+            <div class="accordion-heading">
               <a class="accordion-toggle" data-toggle="collapse" data-parent="#parent-month-@month.month" href="#month-@month.month-week-@week.week">
                   @week.name (@week.likes likes @formatPercentage(week.likesPercentage) @week.comments comments @formatPercentage(week.commentsPercentage))
               </a>
@@ -103,14 +103,14 @@
                     <div class="well well-small">@activity.date
                     @switch (activity.type)
                     {
-                        case 0: 
-                            @:status update @activity.name 
+                        case 0:
+                            @:status update @activity.name
                             break;
                         case 1:
                             @:<a target="_blank" href="@activity.href">group discussion "@activity.name"</a>
                             break;
                         case 2:
-                            @:comment in <a target="_blank" href="@activity.href">group discussion "@activity.name"</a> 
+                            @:comment in <a target="_blank" href="@activity.href">group discussion "@activity.name"</a>
                             break;
                     }
                   (@activity.likes likes, @activity.comments comments)</div>
