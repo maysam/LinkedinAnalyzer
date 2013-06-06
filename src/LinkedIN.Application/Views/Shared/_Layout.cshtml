@@ -12,20 +12,17 @@
 		<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
-
-
-
-<div class="container">
-  <div class="row-fluid well">
-    <div class="span7 offset1">
-      <h1 class="pull-left">LinkedIn Metrics Analyzer</h1>
-      <h2 class="pull-left lead">Overview @DateTime.Today.ToString("dd.MM.yyyy")</h2>
+    <div class="container well">
+        <div class="span8">
+          <h1 class="pull-left">LinkedIn Metrics Analyzer</h1>
+        </div>
+        <div class="span3">
+            <img class="pull-right" src="../../Content/logo_abrantix.png" border="0" width="200" height="37" alt="Abrantix AG" />
+        </div>
+        <div class="span11">
+          <p class=" lead">Overview 07.06.2013</p>
+        </div>
     </div>
-    <div class="span4">
-        <img  class="pull-right" src="../../Content/logo_abrantix.png" border="0" width="200" height="37" alt="Abrantix AG">
-    </div>
-  </div>
-</div>
 		@RenderBody()
 	</body>
 </html>
