@@ -37,6 +37,27 @@ namespace LinkedIN.Application.Controllers
                     var fields = new[] { new ProfileField(all) };
                     var l_profile = client.RetrieveCurrentMemberProfile(fields);
                     Profile profile = new Profile(l_profile);
+                    var gms = client.RetrieveCurrentMemberGroups();
+                    foreach (GroupMembership gm in gms)
+                    {
+                        try
+                        {
+                            var group_posts = client.RetrieveCurrentMemberGroupPosts(gm.Key);
+                            foreach (var post in group_posts)
+                            {
+                                System.Diagnostics.Debug.WriteLine(post);
+                                String content = post.summary;
+                                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                                DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
+                                profile.add(updateTime, content, post.likes.Total, post.Comments.Total, "GRP", "");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine("ERROR:");
+                            System.Diagnostics.Debug.WriteLine(e);
+                        }
+                    }
                     Random rnd = new Random(DateTime.Now.Millisecond);
                     var words = new[] { "lorem", "ipsum", "dolor", "sit", "amet", "consectetuer", "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod", "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat" };
                     var types_old = new[] { "PRFU", "JGRP", "VIRL", "SHAR", "PRFX", "PICT" };

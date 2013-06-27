@@ -44,7 +44,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\People\Comment.cs" />
+    <Compile Include="Model\People\Comments.cs" />
     <Compile Include="Connections.cs" />
+    <Compile Include="Model\People\Creator.cs" />
     <Compile Include="LinkedINUnauthorizedException.cs" />
     <Compile Include="Model\FieldSelector.cs" />
     <Compile Include="Model\OAuth\AccessToken.cs" />
@@ -53,10 +56,14 @@
     <Compile Include="LinkedINRestClient.cs" />
     <Compile Include="Model\People\Action.cs" />
     <Compile Include="Model\People\BoundAccountType.cs" />
+    <Compile Include="Model\People\Category.cs" />
     <Compile Include="Model\People\Certification.cs" />
     <Compile Include="Model\People\CertificationAuthority.cs" />
     <Compile Include="Model\People\Content.cs" />
+    <Compile Include="Model\People\CountForCategory.cs" />
+    <Compile Include="Model\People\CountsByCategory.cs" />
     <Compile Include="Model\People\CurrentShare.cs" />
+    <Compile Include="Model\People\Group.cs" />
     <Compile Include="Model\People\Like.cs" />
     <Compile Include="Model\People\Company.cs" />
     <Compile Include="Model\People\CompanyType.cs" />
@@ -109,12 +116,12 @@
     <Compile Include="Model\People\NetworkStats.cs" />
     <Compile Include="OAuth.cs" />
     <Compile Include="Model\OAuth\OAuthToken.cs" />
+    <Compile Include="Model\People\Post.cs" />
     <Compile Include="Profile.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\OAuth\RequestToken.cs" />
-    <Compile Include="Shares.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Model\OAuth\OAuth.cd" />

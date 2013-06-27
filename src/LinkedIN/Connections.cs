@@ -150,5 +150,33 @@ namespace LinkedIN
             // execute the request
             return ExecuteRequest<List<Update>>(request);
         }
+        /// <summary>
+        /// </summary>
+        public List<Post> RetrieveCurrentMemberGroupPosts(string group)
+        {
+            var idPart = "~";
+            var request = new RestRequest("people/" + idPart + "/group-memberships/" + group + "/posts:(creator:(first-name,last-name,picture-url),title,summary,creation-timestamp,likes,comments,attachment:(image-url,content-domain,content-url,title,summary))");
+            request.AddParameter("role", "creator");
+            request.AddParameter("category", "discussion");
+            request.AddParameter("start", "0");
+            request.AddParameter("count", "250");
+            // execute the request
+            return ExecuteRequest<List<Post>>(request);
+        }
+
+        /// <summary>
+        /// getting the list of user group memberships
+        /// </summary>
+        public List<GroupMembership> RetrieveCurrentMemberGroups()
+        {
+            var idPart = "~";
+            var request = new RestRequest("people/" + idPart + "/group-memberships:(group:(id,name,counts-by-category))");
+            request.AddParameter("membership-state", "member");
+            request.AddParameter("start", "0");
+            request.AddParameter("count", "250");
+            // execute the request
+            return ExecuteRequest<List<GroupMembership>>(request);
+        }
+
     }
 }
