@@ -55,6 +55,8 @@
     <Compile Include="Model\People\BoundAccountType.cs" />
     <Compile Include="Model\People\Certification.cs" />
     <Compile Include="Model\People\CertificationAuthority.cs" />
+    <Compile Include="Model\People\Content.cs" />
+    <Compile Include="Model\People\CurrentShare.cs" />
     <Compile Include="Model\People\Like.cs" />
     <Compile Include="Model\People\Company.cs" />
     <Compile Include="Model\People\CompanyType.cs" />

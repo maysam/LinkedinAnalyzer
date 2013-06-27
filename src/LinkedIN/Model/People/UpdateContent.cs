@@ -8,6 +8,9 @@ namespace LinkedIN.Model.People
     public class UpdateContent
     {
         #region Properties
+        /// <summary>
+        /// </summary>
+        public Person Person { get; set; }
         /*
         /// <summary>
         /// </summary>

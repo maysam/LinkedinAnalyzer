@@ -10,7 +10,7 @@ namespace LinkedIN.Application.Model
 {
     public class Data
     {
-        public Data(int _type, string str, int _likes, int _comments, string _href, DateTime _date)
+        public Data(string _type, string str, int _likes, int _comments, string _href, DateTime _date)
         {
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
@@ -19,7 +19,7 @@ namespace LinkedIN.Application.Model
             name = str;
             likes = _likes;
             comments = _comments;
-            href += _href;
+            href = _href;
         }
         public Data(int _index, int _likes, int _comments)
         {
@@ -35,10 +35,10 @@ namespace LinkedIN.Application.Model
         public int month;
         public int week;
         public int index;
-        public int type;
+        public string type;
         public string date;
         public string name;
-        public string href = "http://blog.abrantix.com/";
+        public string href;
         public int likes = 0, comments = 0;
         public int likesPercentage, commentsPercentage;
         public List<Data> activities = new List<Data>();
@@ -48,7 +48,7 @@ namespace LinkedIN.Application.Model
             comments += _comments;
         }
 
-        internal void addRaw(string str, int type, int _likes, int _comments, string _href, DateTime _date)
+        internal void addRaw(string str, string type, int _likes, int _comments, string _href, DateTime _date)
         {
             addStatistics(_likes, _comments);
             activities.Add(new Data(type, str, _likes, _comments, _href, _date));
@@ -57,7 +57,7 @@ namespace LinkedIN.Application.Model
 
     public class Profile
     {
-        public void add(DateTime date, String str, int likes, int comments, int type, string href)
+        public void add(DateTime date, String str, int likes, int comments, string type, string href)
         {
             int i = DateTime.Now.Month - date.Month + 1;
             int k = (int)Math.Floor((double)(DateTime.Now.Subtract(date).Days / 7));
@@ -69,7 +69,6 @@ namespace LinkedIN.Application.Model
         public Profile(Person l_profile)
         {
             person = l_profile;
-            Random rnd = new Random(DateTime.Now.Millisecond);
             DateTime _month = DateTime.Now;
             DateTime _week = DateTime.Now;
             monthes = new SortedDictionary<int, Data>();
@@ -82,11 +81,11 @@ namespace LinkedIN.Application.Model
                 month.month = _month.Month;
                 if (i == 1)
                 {
-                    month.name = "Current Month"; // (31 likes +70% 42 comments -32%)
+                    month.name = "Current Month";
                 }
                 else
                 {
-                    month.name = _month.ToString("MMMM yyyy"); // (31 likes +70% 42 comments -32%)
+                    month.name = _month.ToString("MMMM yyyy");
                 }
                 for (int j = 1; (_week.Month == _month.Month && _week.Day > 3) || (_week.Month > _month.Month && _week.Day <= 3); j++, _week = _week.AddDays(-7))
                 {
@@ -105,13 +104,6 @@ namespace LinkedIN.Application.Model
                     }
                     k++;
                 }
-                //, rnd.Next(1, 100), rnd.Next(1, 100)
-            }
-            var words = new[] { "lorem", "ipsum", "dolor", "sit", "amet", "consectetuer", "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod", "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat" };
-            for (int j = 0; j < 100; j++)
-            {
-                string text = words[rnd.Next(words.Length)] + " " + words[rnd.Next(words.Length)];
-                add(DateTime.Today.AddDays(-rnd.Next(100)), text, rnd.Next(1, 10), rnd.Next(1, 10), rnd.Next(3), words[rnd.Next(words.Length)]);
             }
         }
         public Person person { get; set; }

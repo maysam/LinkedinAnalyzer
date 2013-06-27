@@ -16,6 +16,9 @@ namespace LinkedIN.Model.People
         /// <summary>
         /// </summary>
         public string UpdateType { get; set; }
+        /// <summary>
+        /// </summary>
+        public string UpdateUrl { get; set; }
         
         /// <summary>
         /// </summary>
@@ -38,7 +41,7 @@ namespace LinkedIN.Model.People
         /// <summary>
         /// </summary>
         public bool IsCommentable { get; set; }
-          
+
         /// <summary>
         /// </summary>
         public UpdateComments UpdateComments { get; set; }

@@ -32,6 +32,15 @@ namespace LinkedIN
 		protected LinkedINHttpResponseException( SerializationInfo info, StreamingContext context ) : base( info, context )
 		{
 		}
+
+        /// <summary>
+        /// Serialization GetObjectData.
+        /// </summary>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+        // Breakpoint placed on the following line never gets hit:
+        throw new NotImplementedException();
+        }
 		#endregion
 		#region Private Fields
 		/// <summary>

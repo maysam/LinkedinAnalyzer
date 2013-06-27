@@ -35,17 +35,32 @@ namespace LinkedIN.Application.Controllers
                     all += "mfeed-rss-url,following,job-bookmarks,group-memberships,suggestions,date-of-birth,main-address,member-url-resources,";
                     all += "picture-url,public-profile-url,related-profile-views";
                     var fields = new[] { new ProfileField(all) };
-                    var recent_updates = client.RetrieveCurrentMemberUpdates("STAT");
-
                     var l_profile = client.RetrieveCurrentMemberProfile(fields);
-
-
-                    //var idonly = "headline,first-name,last-name";
-                    //var id_field = new[] { new ProfileField(idonly) };
-                    //                    var profile_Connections = client.RetrieveCurrentMemberConnections(null);
-                    //                  l_profile.NumberOfConnections = l_profile.Connections.Total;
-                    //var ns = client.RetrieveCurrentMemberNetworkStats(fields);
                     Profile profile = new Profile(l_profile);
+                    Random rnd = new Random(DateTime.Now.Millisecond);
+                    var words = new[] { "lorem", "ipsum", "dolor", "sit", "amet", "consectetuer", "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod", "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat" };
+                    var types_old = new[] { "PRFU", "JGRP", "VIRL", "SHAR", "PRFX", "PICT" };
+                    var types = new[] { "JGRP", "VIRL", "SHAR", "PRFX" };
+                    foreach (var type in types)
+                    {
+                        try
+                        {
+                            var recent_updates = client.RetrieveCurrentMemberUpdates(type);
+                            foreach (var update in recent_updates)
+                            {
+                                System.Diagnostics.Debug.WriteLine(update.UpdateKey, update.UpdateType);
+                                String content = update.UpdateContent.Person.CurrentShare.Comment;
+                                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                                DateTime updateTime = origin.AddMilliseconds(update.TimeStamp);
+                                profile.add(updateTime, content, update.NumLikes, update.UpdateComments.Total, type, update.UpdateUrl);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine("ERROR:");
+                            System.Diagnostics.Debug.WriteLine(e);
+                        }
+                    }
                     profile.processPercentages();
                     var ns = l_profile.NetworkStats;
                     profile.firstDegreeConnections = ns.properties[0].Value;
@@ -55,14 +70,6 @@ namespace LinkedIN.Application.Controllers
 
                     var current_week = cal.GetWeekOfYear(DateTime.Now, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
 
-                    for (int i = 0; i < recent_updates.Count; i++)
-                    {
-                        var update = recent_updates[i];
-                        //  profile.week[week] = DateTime.Now.AddDays(-7*week).ToString("dd.MM.yyyy");
-                        //  profile.likes[week] += update.NumLikes;
-                        //  if (update.IsCommentable)
-                        //  profile.comments[week] += update.UpdateComments.Total;
-                    }
 
 					// return the view
 					return View("Profile", profile);

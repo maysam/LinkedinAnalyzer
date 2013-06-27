@@ -109,14 +109,15 @@
                     <div class="well well-small">@activity.date
                     @switch (activity.type)
                     {
-                        case 0:
-                            @:status update @activity.name
+                        case "SHAR":
+                            @:status update "@activity.name"
                             break;
-                        case 1:
+                        case "1":
                             @:<a target="_blank" href="@activity.href">group discussion "@activity.name"</a>
                             break;
-                        case 2:
-                            @:comment in <a target="_blank" href="@activity.href">group discussion "@activity.name"</a>
+                        case "2":
+                        default:
+                            @:comment in <a target="_blank" href="@activity.href">group discussion "@activity.name"</a> - @activity.type
                             break;
                     }
                   (@activity.likes likes, @activity.comments comments)</div>

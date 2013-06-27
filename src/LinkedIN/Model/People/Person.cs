@@ -103,13 +103,6 @@ namespace LinkedIN.Model.People
 		/// </summary>
 		public long LastModifiedTimestamp { get; set; }
 		/// <summary>
-		/// The member's current share, if set.
-		/// </summary>
-		/// <remarks>
-		/// Overloaded to also return "current-status" (if there is no URL shared). (Status and share are the same.)
-		/// </remarks>
-		public string CurrentShare { get; set; }
-		/// <summary>
 		/// The member's network statistics and updates.
 		/// </summary>
         public NetworkStats NetworkStats { get; set; }
@@ -293,6 +286,10 @@ namespace LinkedIN.Model.People
         /// <summary>
         /// </summary>
         public Collection<Update> Updates { get; set; }
+        /// <summary>
+        /// </summary>
+        public CurrentShare CurrentShare { get; set; }
+        
         #endregion
 	}
 }
