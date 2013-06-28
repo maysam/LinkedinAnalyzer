@@ -18,5 +18,9 @@
         /// <summary>
         /// </summary>
         public Comments Comments { get; set; }
+        
+        /// <summary>
+        /// </summary>
+        public string SiteGroupPostUrl { get; set; }
     }
 }

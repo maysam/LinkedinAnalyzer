@@ -49,7 +49,24 @@ namespace LinkedIN.Application.Controllers
                                 String content = post.summary;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
-                                profile.add(updateTime, content, post.likes.Total, post.Comments.Total, "GRP", "");
+                                profile.add(updateTime, content, post.likes.Total, post.Comments.Total, "GRP", post.SiteGroupPostUrl);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine("ERROR:");
+                            System.Diagnostics.Debug.WriteLine(e);
+                        }
+                        try
+                        {
+                            var group_posts = client.RetrieveCurrentMemberGroupComments(gm.Key);
+                            foreach (var post in group_posts)
+                            {
+                                System.Diagnostics.Debug.WriteLine(post);
+                                String content = post.summary;
+                                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                                DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
+                                profile.add(updateTime, content, post.likes.Total, post.Comments.Total, "CMT", post.SiteGroupPostUrl);
                             }
                         }
                         catch (Exception e)
