@@ -6,8 +6,8 @@
     List<string> likes_rows = new List<string>();
     foreach (LinkedIN.Application.Model.Data week in @Model.weeks.Values)
     {
-        comments_rows.Add("['" + @week.date + "', " + @week.comments + "]");
-        likes_rows.Add("['" + @week.date + "', " + @week.likes + "]");
+        comments_rows.Insert(0, "['" + @week.date + "', " + @week.comments + "]");
+        likes_rows.Insert(0,"['" + @week.date + "', " + @week.likes + "]");
     }
     var comments = "['Week', 'Comments']," + String.Join(",", comments_rows);
     var likes = "['Week', 'Likes']," + String.Join(",", likes_rows);
