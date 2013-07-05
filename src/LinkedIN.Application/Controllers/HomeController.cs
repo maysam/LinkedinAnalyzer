@@ -109,17 +109,21 @@ namespace LinkedIN.Application.Controllers
                     var current_week = cal.GetWeekOfYear(DateTime.Now, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
 
 
-					// return the view
-					return View("Profile", profile);
-				}
-				catch (LinkedINUnauthorizedException)
-				{
-					// clear the access token
-					Session.Remove("accessToken");
+                    // return the view
+                    return View("Profile", profile);
+                }
+                catch (LinkedINUnauthorizedException)
+                {
+                    // clear the access token
+                    Session.Remove("accessToken");
 
-					// return the unauthorized view
-					return View("Login");
-				}
+                    // return the unauthorized view
+                    return View("Login");
+                }
+                catch (Exception e)
+                {
+                    return View("Error", e);
+                }
 			}
 
 			// return the unauthorized view
@@ -145,8 +149,15 @@ namespace LinkedIN.Application.Controllers
 
 			// Phase 1: acquire request token
 			RequestToken requestToken;
-			var redirectUri = client.RequestAuthorizationToken(callbackUri, out requestToken);
-
+            Uri redirectUri;
+            try
+            {
+                redirectUri = client.RequestAuthorizationToken(callbackUri, out requestToken);
+            }
+            catch (Exception e)
+            {
+                return View("Error", e);
+            }
 			// store the request token in the session for later use
 			Session["requestToken"] = requestToken;
 

@@ -1,0 +1,21 @@
+﻿@model Exception
+@{
+	ViewBag.Title = "Error";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="pagination-centered">
+   There has been an error, please try again <p style="color:red">@Model.Message</p>
+@{
+    var accessToken = (LinkedIN.Model.OAuth.AccessToken)Session["accessToken"];
+    if (accessToken != null) {
+    <a href="@Url.Action("Index", "Home")">
+        <img src="../../Content/reload.png" />
+    </a>
+
+    } else {
+    <a href="@Url.Action("Login", "Home")">
+        <img src="../../Content/js-signin.png" />
+    </a>
+    }
+}
+</div>
