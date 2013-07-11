@@ -66,7 +66,7 @@ namespace LinkedIN.Application.Controllers
                                 String content = post.summary;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
-                                profile.add(updateTime, content, post.likes.Total, post.Comments.Total, "CMT", post.SiteGroupPostUrl);
+                                profile.add(updateTime, content, 0, 0, "CMT", post.SiteGroupPostUrl);
                             }
                         }
                         catch (Exception e)

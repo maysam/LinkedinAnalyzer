@@ -110,17 +110,17 @@
                     @switch (activity.type)
                     {
                         case "GRP":
-                            @:Group Discussion <a target="_blank" href="@activity.href">"@activity.name"</a>
+                            @:Group Discussion <a target="_blank" href="@activity.href">"@activity.name"</a>(@activity.likes likes, @activity.comments comments)
                             break;
                         case "CMT":
                             @:Comment In Group Discussion<a target="_blank" href="@activity.href">"@activity.name"</a>
                             break;
                         case "SHAR":
                         default:
-                            @:Status Update "@activity.name"
+                            @:Status Update "@activity.name" (@activity.likes likes, @activity.comments comments)
                             break;
                     }
-                  (@activity.likes likes, @activity.comments comments)</div>
+                  </div>
                 }
                 </div>
               </div>
