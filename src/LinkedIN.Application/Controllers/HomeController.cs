@@ -44,7 +44,7 @@ namespace LinkedIN.Application.Controllers
                             var group_posts = client.RetrieveCurrentMemberGroupPosts(gm.Key);
                             foreach (var post in group_posts)
                             {
-                                String content = post.summary;
+                                String content = post.title;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
                                 profile.add(updateTime, content, post.likes.Total, post.Comments.Total, "GRP", post.SiteGroupPostUrl);
@@ -60,7 +60,7 @@ namespace LinkedIN.Application.Controllers
                             var group_posts = client.RetrieveCurrentMemberGroupComments(gm.Key);
                             foreach (var post in group_posts)
                             {
-                                String content = post.summary;
+                                String content = post.title;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
                                 profile.add(updateTime, content, 0, 0, "CMT", post.SiteGroupPostUrl);

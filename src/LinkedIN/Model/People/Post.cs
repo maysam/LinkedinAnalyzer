@@ -6,6 +6,9 @@
     {
         /// <summary>
         /// </summary>
+        public string title { get; set; }
+        /// <summary>
+        /// </summary>
         public string summary { get; set; }
         /// <summary>
         /// </summary>
