@@ -11,9 +11,15 @@ namespace LinkedIN.Model.People
     {
         /// <summary>
         /// </summary>
+        public string title { get; set; }
+        /// <summary>
+        /// </summary>
+        public string description { get; set; }
+        /// <summary>
+        /// </summary>
         public string submittedUrl { get; set; }
         /// <summary>
         /// </summary>
-        public string title { get; set; }
+        public string submittedImageUrl { get; set; }
     }
 }

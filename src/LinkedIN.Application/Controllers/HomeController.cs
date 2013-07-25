@@ -23,7 +23,6 @@ namespace LinkedIN.Application.Controllers
 				// retrieve the profile
 				try
 				{
-					//var profile = client.RetrieveCurrentMemberProfile(ProfileField.All);
 
 
                     var all = "id,first-name,last-name,maiden-name,formatted-name,phonetic-first-name,phonetic-last-name,";
@@ -45,7 +44,6 @@ namespace LinkedIN.Application.Controllers
                             var group_posts = client.RetrieveCurrentMemberGroupPosts(gm.Key);
                             foreach (var post in group_posts)
                             {
-                                System.Diagnostics.Debug.WriteLine(post);
                                 String content = post.summary;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
@@ -62,7 +60,6 @@ namespace LinkedIN.Application.Controllers
                             var group_posts = client.RetrieveCurrentMemberGroupComments(gm.Key);
                             foreach (var post in group_posts)
                             {
-                                System.Diagnostics.Debug.WriteLine(post);
                                 String content = post.summary;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
@@ -75,9 +72,6 @@ namespace LinkedIN.Application.Controllers
                             System.Diagnostics.Debug.WriteLine(e);
                         }
                     }
-                    Random rnd = new Random(DateTime.Now.Millisecond);
-                    var words = new[] { "lorem", "ipsum", "dolor", "sit", "amet", "consectetuer", "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod", "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat" };
-                    var types_old = new[] { "PRFU", "JGRP", "VIRL", "SHAR", "PRFX", "PICT" };
                     var types = new[] { "JGRP", "VIRL", "SHAR", "PRFX" };
                     foreach (var type in types)
                     {
@@ -86,8 +80,9 @@ namespace LinkedIN.Application.Controllers
                             var recent_updates = client.RetrieveCurrentMemberUpdates(type);
                             foreach (var update in recent_updates)
                             {
-                                System.Diagnostics.Debug.WriteLine(update.UpdateKey, update.UpdateType);
                                 String content = update.UpdateContent.Person.CurrentShare.Comment;
+                                if (content == "" || content == null)
+                                    content = update.UpdateContent.Person.CurrentShare.Content.title; // || update.UpdateContent.Person.CurrentShare.Comment;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(update.TimeStamp);
                                 profile.add(updateTime, content, update.NumLikes, update.UpdateComments.Total, type, update.UpdateUrl);
@@ -103,13 +98,6 @@ namespace LinkedIN.Application.Controllers
                     var ns = l_profile.NetworkStats;
                     profile.firstDegreeConnections = ns.properties[0].Value;
                     profile.secondDegreeConnections = ns.properties[1].Value;
-                    DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
-                    Calendar cal = dfi.Calendar;
-
-                    var current_week = cal.GetWeekOfYear(DateTime.Now, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
-
-
-                    // return the view
                     return View("Profile", profile);
                 }
                 catch (LinkedINUnauthorizedException)
