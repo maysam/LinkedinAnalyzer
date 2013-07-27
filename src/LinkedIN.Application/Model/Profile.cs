@@ -10,11 +10,12 @@ namespace LinkedIN.Application.Model
 {
     public class Data
     {
-        public Data(string _type, string str, int _likes, int _comments, string _href, DateTime _date)
+        public Data(string _type, string str, int _likes, int _comments, string _href, DateTime input_date)
         {
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
-            date = _date.ToShortDateString();
+            _date = input_date;
+            date = input_date.ToShortDateString();
             type = _type;
             name = str;
             likes = _likes;
@@ -37,6 +38,7 @@ namespace LinkedIN.Application.Model
         public int index;
         public string type;
         public string date;
+        public DateTime _date;
         public string name;
         public string href;
         public int likes = 0, comments = 0;

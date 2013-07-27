@@ -94,7 +94,7 @@
             {
                 if (@month.month == @week.month && week.activities.Count > 0)
                 {
-                    week.activities.Sort((itemA, itemB) => itemB.date.CompareTo(itemA.date));
+                    week.activities.Sort((itemA, itemB) => itemB._date.CompareTo(itemA._date));
           <div class="accordion-group">
             <div class="accordion-heading">
               <a class="accordion-toggle" data-toggle="collapse" data-parent="#parent-month-@month.month" href="#month-@month.month-week-@week.week">
