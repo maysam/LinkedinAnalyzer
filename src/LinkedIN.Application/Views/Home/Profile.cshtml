@@ -28,8 +28,7 @@
         titleTextStyle: {fontSize: 20, bold: true},
         hAxis: { title: 'Week', textStyle: {fontSize:10, bold: true}, slantedText: true, slantedTextAngle:45 },
         colors: ["#0D2040"],
-        legend: "none",
-        // vAxis: {maxValue: 11},
+        legend: "none", // vAxis: {maxValue: 11},
         width: '80%', height: 500,
         chartArea: {width: 400}
     };
@@ -74,7 +73,13 @@
     }
     else
     {
-        <span style="color:red">@number%</span>
+        if(number<0) {
+            <span style="color:red">@number%</span>
+        }
+        else
+        {
+            <span style="color:black">0%</span>
+        }
     }
 }
 <div class="accordion container well" id="monthes">
@@ -92,7 +97,7 @@
         <div class="accordion-inner accordion" id="parent-month-@month.month">
             @foreach (LinkedIN.Application.Model.Data week in Model.weeks.Values)
             {
-                if (@month.month == @week.month && week.activities.Count > 0)
+                if (@month.month == @week.month)
                 {
                     week.activities.Sort((itemA, itemB) => itemB._date.CompareTo(itemA._date));
           <div class="accordion-group">
@@ -106,7 +111,7 @@
                 <div class="accordion accordion-group"  style="border: none;">
                 @foreach (LinkedIN.Application.Model.Data activity in week.activities)
                 {
-                    <div class="well well-small">@activity.date
+                    <div class="well well-small activity" data-likes="@activity.likes" data-comments="@activity.comments" data-date="@activity._date">@activity.date
                     @switch (activity.type)
                     {
                         case "GRP":
