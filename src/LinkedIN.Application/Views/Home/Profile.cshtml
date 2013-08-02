@@ -51,11 +51,11 @@
         <p class="lead">@Model.person.FirstName @Model.person.LastName</p>          
       </div>
       <div class="pagination-centered">
-        <h3>@Model.person.NetworkStats.properties[0].Value</h3>
+        <h3>@Model.firstDegreeConnections</h3>
         <h4>Direct Contacts</h4>
       </div>
       <div class="pagination-centered">
-        <h3>@Model.person.NetworkStats.properties[1].Value</h3>
+        <h3>@Model.secondDegreeConnections</h3>
         <h4>Second Degree Contacts</h4>
       </div>
     </div>

@@ -16,15 +16,11 @@ namespace LinkedIN.Application.Controllers
 			var accessToken = (AccessToken) Session["accessToken"];
 			if (accessToken != null)
 			{
-				// create the client
-				var client = new LinkedINRestClient(consumerKey, consumerSecret, accessToken);
-
-
+                // create the client
+                var client = new LinkedINRestClient(consumerKey, consumerSecret, accessToken);
 				// retrieve the profile
-				try
-				{
-
-
+                try
+                {	
                     var all = "id,first-name,last-name,maiden-name,formatted-name,phonetic-first-name,phonetic-last-name,";
                     all += "formatted-phonetic-name,headline,location:(name,country:(code)),industry,distance,relation-to-viewer:(distance),";
                     all += "last-modified-timestamp,current-share,network,connections,num-connections,num-connections-capped,summary,";
@@ -34,8 +30,8 @@ namespace LinkedIN.Application.Controllers
                     all += "mfeed-rss-url,following,job-bookmarks,group-memberships,suggestions,date-of-birth,main-address,member-url-resources,";
                     all += "picture-url,public-profile-url,related-profile-views";
                     var fields = new[] { new ProfileField(all) };
-                    var l_profile = client.RetrieveCurrentMemberProfile(fields);
-                    Profile profile = new Profile(l_profile);
+                    var user_profile = client.RetrieveCurrentMemberProfile(fields);
+                    Profile profile = new Profile(user_profile);
                     var gms = client.RetrieveCurrentMemberGroups();
                     foreach (GroupMembership gm in gms)
                     {
@@ -95,9 +91,6 @@ namespace LinkedIN.Application.Controllers
                         }
                     }
                     profile.processPercentages();
-                    var ns = l_profile.NetworkStats;
-                    profile.firstDegreeConnections = ns.properties[0].Value;
-                    profile.secondDegreeConnections = ns.properties[1].Value;
                     return View("Profile", profile);
                 }
                 catch (LinkedINUnauthorizedException)

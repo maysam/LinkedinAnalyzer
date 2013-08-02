@@ -68,9 +68,11 @@ namespace LinkedIN.Application.Model
             if (weeks.ContainsKey(k))
                 weeks[k].addRaw(str, type, likes, comments, href, date);
         }
-        public Profile(Person l_profile)
+        public Profile(Person person)
         {
-            person = l_profile;
+            this.person = person;
+            firstDegreeConnections = person.NetworkStats.properties[0].Value;
+            secondDegreeConnections = person.NetworkStats.properties[1].Value;
             DateTime _month = DateTime.Now;
             DateTime _week = DateTime.Now;
             monthes = new SortedDictionary<int, Data>();
