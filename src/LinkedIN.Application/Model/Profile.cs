@@ -8,71 +8,27 @@ using System.Globalization;
 
 namespace LinkedIN.Application.Model
 {
-    public class Data
-    {
-        public Data(string _type, string str, int _likes, int _comments, string _href, DateTime input_date)
-        {
-
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
-            _date = input_date;
-            date = input_date.ToShortDateString();
-            type = _type;
-            name = str;
-            likes = _likes;
-            comments = _comments;
-            href = _href;
-        }
-        public Data(int _index, int _likes, int _comments)
-        {
-            index = _index;
-            likes = _likes;
-            comments = _comments;
-        }
-        public Data(int _index)
-        {
-            index = _index;
-        }
-
-        public int month;
-        public int week;
-        public int index;
-        public string type;
-        public string date;
-        public DateTime _date;
-        public string name;
-        public string href;
-        public int likes = 0, comments = 0;
-        public int likesPercentage, commentsPercentage;
-        public List<Data> activities = new List<Data>();
-        internal void addStatistics(int _likes, int _comments)
-        {
-            likes += _likes;
-            comments += _comments;
-        }
-
-        internal void addRaw(string str, string type, int _likes, int _comments, string _href, DateTime _date)
-        {
-            addStatistics(_likes, _comments);
-            activities.Add(new Data(type, str, _likes, _comments, _href, _date));
-        }
-    }
 
     public class Profile
     {
-        public void add(DateTime date, String str, int likes, int comments, string type, string href)
+        public void add(Data item)
         {
-            int i = DateTime.Now.Month - date.Month + 1;
-            int k = (int)Math.Floor((double)(DateTime.Now.Subtract(date).Days / 7));
+            int i = DateTime.Now.Month - item._date.Month + 1;
+            int k = (int)Math.Floor((double)(DateTime.Now.Subtract(item._date).Days / 7));
             if (monthes.ContainsKey(i))
-                monthes[i].addStatistics(likes, comments);
+                monthes[i].addStatistics(item.likes, item.comments);
             if (weeks.ContainsKey(k))
-                weeks[k].addRaw(str, type, likes, comments, href, date);
+                weeks[k].addRaw(item);
         }
+
         public Profile(Person person)
         {
             this.person = person;
+            if (person.NetworkStats != null)
+            {
             firstDegreeConnections = person.NetworkStats.properties[0].Value;
             secondDegreeConnections = person.NetworkStats.properties[1].Value;
+            }
             DateTime _month = DateTime.Now;
             DateTime _week = DateTime.Now;
             monthes = new SortedDictionary<int, Data>();

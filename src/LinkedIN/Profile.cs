@@ -34,13 +34,13 @@ namespace LinkedIN
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="id"/> or <paramref name="fields"/> is null.</exception>
 		/// <exception cref="LinkedINHttpResponseException">Thrown when the an unexepcted response was returned from LinkedIN.</exception>
 		/// <exception cref="LinkedINUnauthorizedException">Thrown when an request was made to an protected resource without the proper authorization.</exception>
-		public Person RetrieveMemberProfileById( string id, IEnumerable< ProfileField > fields )
+		public Person RetrieveProfileById( string id, IEnumerable< ProfileField > fields )
 		{
 			// validate arguments
 			if ( string.IsNullOrEmpty( id ) )
 				throw new ArgumentNullException( "id" );
 
-			return RetrieveProfileById( "id=" + id, fields );
+			return RetrieveProfile( "id=" + id, fields );
 		}
 		/// <summary>
 		/// Retrieves an <see cref="Person"/> by it's <paramref name="idPart"/>.
@@ -51,13 +51,13 @@ namespace LinkedIN
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="idPart"/> or <paramref name="fields"/> is null.</exception>
 		/// <exception cref="LinkedINHttpResponseException">Thrown when the an unexepcted response was returned from LinkedIN.</exception>
 		/// <exception cref="LinkedINUnauthorizedException">Thrown when an request was made to an protected resource without the proper authorization.</exception>
-		protected Person RetrieveProfileById( string idPart, IEnumerable< ProfileField > fields )
+		protected Person RetrieveProfile( string idPart, IEnumerable< ProfileField > fields )
 		{
 			// validate arguments
 			if ( string.IsNullOrEmpty( idPart ) )
 				throw new ArgumentNullException( "idPart" );
-//			if ( fields == null )
-			//	throw new ArgumentNullException( "fields" );
+			if ( fields == null )
+				throw new ArgumentNullException( "fields" );
 
 			// create the request
 			var request = new RestRequest( "people/" + idPart + FieldSelector.ToFieldSelector( fields ) );

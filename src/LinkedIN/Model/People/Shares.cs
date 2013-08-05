@@ -9,9 +9,8 @@ namespace LinkedIN.Model.People
 	{
 		#region Properties
 		/// <summary>
-		/// The <see cref="Person"/>s.
 		/// </summary>
-		public Collection< string> shares { get; set; }
+		public Collection<Share> shares { get; set; }
 		#endregion
 	}
 }

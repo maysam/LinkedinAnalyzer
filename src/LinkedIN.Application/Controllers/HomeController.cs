@@ -21,6 +21,10 @@ namespace LinkedIN.Application.Controllers
 				// retrieve the profile
                 try
                 {	
+                    var id_field = new[] { new ProfileField("id") };
+                    var tiny_user_profile = client.RetrieveCurrentMemberProfile(id_field);
+                    var USERID = tiny_user_profile.Id;
+
                     var all = "id,first-name,last-name,maiden-name,formatted-name,phonetic-first-name,phonetic-last-name,";
                     all += "formatted-phonetic-name,headline,location:(name,country:(code)),industry,distance,relation-to-viewer:(distance),";
                     all += "last-modified-timestamp,current-share,network,connections,num-connections,num-connections-capped,summary,";
@@ -30,20 +34,27 @@ namespace LinkedIN.Application.Controllers
                     all += "mfeed-rss-url,following,job-bookmarks,group-memberships,suggestions,date-of-birth,main-address,member-url-resources,";
                     all += "picture-url,public-profile-url,related-profile-views";
                     var fields = new[] { new ProfileField(all) };
-                    var user_profile = client.RetrieveCurrentMemberProfile(fields);
+
+                    //  USERID = "GP6NLJzhwV";  maysam
+                    //  USERID = "DDlt4Qzq2Q";  martin
+
+                    var user_profile = client.RetrieveProfileById(USERID, fields);
                     Profile profile = new Profile(user_profile);
-                    var gms = client.RetrieveCurrentMemberGroups();
+                    var gms = client.RetrieveGroups(USERID);
                     foreach (GroupMembership gm in gms)
                     {
                         try
                         {
-                            var group_posts = client.RetrieveCurrentMemberGroupPosts(gm.Key);
+                            var group_posts = client.RetrieveGroupPostsByID(USERID, gm.Key);
                             foreach (var post in group_posts)
                             {
                                 String content = post.title;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
-                                profile.add(updateTime, content, post.likes.Total, post.Comments.Total, "GRP", post.SiteGroupPostUrl);
+                                int likes_count = post.likes.Total;
+                                int comments_count = post.Comments.Total;
+                                var item = new GroupPost(content, likes_count, comments_count, post.SiteGroupPostUrl, updateTime);
+                                profile.add(item);
                             }
                         }
                         catch (Exception e)
@@ -53,13 +64,14 @@ namespace LinkedIN.Application.Controllers
                         }
                         try
                         {
-                            var group_posts = client.RetrieveCurrentMemberGroupComments(gm.Key);
+                            var group_posts = client.RetrieveGroupPostCommentsByID(USERID, gm.Key);
                             foreach (var post in group_posts)
                             {
                                 String content = post.title;
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
-                                profile.add(updateTime, content, 0, 0, "CMT", post.SiteGroupPostUrl);
+                                var item = new GroupPostComment(content, 0, 0, post.SiteGroupPostUrl, updateTime);
+                                profile.add(item);
                             }
                         }
                         catch (Exception e)
@@ -68,26 +80,43 @@ namespace LinkedIN.Application.Controllers
                             System.Diagnostics.Debug.WriteLine(e);
                         }
                     }
-                    var types = new[] { "JGRP", "VIRL", "SHAR", "PRFX" };
+                    var types = new[] { "VIRL", "SHAR", "PRFX" };
                     foreach (var type in types)
                     {
-                        try
-                        {
-                            var recent_updates = client.RetrieveCurrentMemberUpdates(type);
+                            var recent_updates = client.RetrieveUpdatesById(USERID, type);
                             foreach (var update in recent_updates)
                             {
-                                String content = update.UpdateContent.Person.CurrentShare.Comment;
+
+                        try
+                        {
+                                    String content = type + " !!! " + update.ToString();
+                                    if (update.UpdateContent.Person.CurrentShare == null)
+                                    {
+                                        content = type + " ??? " + update.ToString();
+                                    }
+                                    else
+                            {
+                                        content = update.UpdateContent.Person.CurrentShare.Comment;
                                 if (content == "" || content == null)
                                     content = update.UpdateContent.Person.CurrentShare.Content.title; // || update.UpdateContent.Person.CurrentShare.Comment;
+                                    }
                                 DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                                 DateTime updateTime = origin.AddMilliseconds(update.TimeStamp);
-                                profile.add(updateTime, content, update.NumLikes, update.UpdateComments.Total, type, update.UpdateUrl);
-                            }
+                                    var likes_count = update.NumLikes;
+                                    if (update.Likes != null)
+                                        likes_count = update.Likes.Total;
+                                    var comments_count = 0;
+                                    if (update.UpdateComments != null)
+                                        comments_count = update.UpdateComments.Total;
+                                    var item = new UserPost(content, likes_count, comments_count, update.UpdateUrl, updateTime);
+                                    profile.add(item);
                         }
                         catch (Exception e)
                         {
-                            System.Diagnostics.Debug.WriteLine("ERROR:");
+                                    System.Diagnostics.Debug.WriteLine("ERROR: on line " + e.Source);
                             System.Diagnostics.Debug.WriteLine(e);
+                                    System.Diagnostics.Debug.WriteLine(update);
+                                }
                         }
                     }
                     profile.processPercentages();

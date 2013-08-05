@@ -111,16 +111,17 @@
                 <div class="accordion accordion-group"  style="border: none;">
                 @foreach (LinkedIN.Application.Model.Data activity in week.activities)
                 {
-                    <div class="well well-small activity" data-likes="@activity.likes" data-comments="@activity.comments" data-date="@activity._date">@activity.date
-                    @switch (activity.type)
+                    <div class="well well-small activity" data-likes="@activity.likes" data-comments="@activity.comments" data-date="@activity._date">
+                        @activity.date
+                    @switch (activity.GetType().Name)
                     {
-                        case "GRP":
+                        case "GroupPost":
                             @:Group Discussion <a target="_blank" href="@activity.href">"@activity.name"</a>(@activity.likes likes, @activity.comments comments)
                             break;
-                        case "CMT":
+                        case "GroupPostComment":
                             @:Comment In Group Discussion<a target="_blank" href="@activity.href">"@activity.name"</a>
                             break;
-                        case "SHAR":
+                        case "UserPost":
                         default:
                             @:Status Update "@activity.name" (@activity.likes likes, @activity.comments comments)
                             break;

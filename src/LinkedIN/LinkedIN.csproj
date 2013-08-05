@@ -23,8 +23,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\LinkedIN.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>
+    </DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\People\Comment.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Model\People\PublicationAuthor.cs" />
     <Compile Include="Model\People\Publisher.cs" />
     <Compile Include="Model\People\Recommendation.cs" />
+    <Compile Include="Model\People\Share.cs" />
     <Compile Include="Model\People\Shares.cs" />
     <Compile Include="Model\People\Skill.cs" />
     <Compile Include="Model\People\SkillName.cs" />

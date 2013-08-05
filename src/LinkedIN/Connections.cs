@@ -136,6 +136,17 @@ namespace LinkedIN
         public List<Update> RetrieveCurrentMemberUpdates(string type)
         {
             var idPart = "~";
+            return RetrieveUpdates(idPart, type);
+        }
+
+        public List<Update> RetrieveUpdatesById(string USERID, string type)
+        {
+            var idPart = "id=" + USERID;
+            return RetrieveUpdates(idPart, type);
+        }
+
+        public List<Update> RetrieveUpdates(string idPart, string type)
+        {
 
             // create the request
             var request = new RestRequest("people/" + idPart + "/network/updates");
@@ -150,27 +161,54 @@ namespace LinkedIN
             // execute the request
             return ExecuteRequest<List<Update>>(request);
         }
+
+        /// <summary>
+        /// getting the list of user group memberships
+        /// </summary>
+        public List<GroupMembership> RetrieveCurrentMemberGroups()
+        {
+            return RetrieveGroups("~");
+        }
+
+        /// <summary>
+        /// getting the list of user group memberships
+        /// </summary>
+        public List<GroupMembership> RetrieveGroupsById(string id)
+        {
+            return RetrieveGroups("id=" + id);
+        }
+        
+        /// <summary>
+        /// getting the list of user group memberships
+        /// </summary>
+        public List<GroupMembership> RetrieveGroups(string idPart)
+        {
+            var request = new RestRequest("people/" + idPart + "/group-memberships:(group:(id,name,counts-by-category),membership-state,show-group-logo-in-profile,allow-messages-from-members,email-digest-frequency,email-announcements-from-managers,email-for-every-new-post)");
+        
+            request.AddParameter("membership-state", "member");
+            request.AddParameter("start", "0");
+            request.AddParameter("count", "250");
+            // execute the request
+            return ExecuteRequest<List<GroupMembership>>(request);
+        }
+
         /// <summary>
         /// </summary>
         public List<Post> RetrieveCurrentMemberGroupPosts(string group)
         {
-            var idPart = "~";
+            return RetrieveGroupPosts("~", group);
+        }
+
+        public List<Post> RetrieveGroupPostsByID(string USERID, string group)
+        {
+            return RetrieveGroupPosts("id=" + USERID, group);
+        }
+
+        public List<Post> RetrieveGroupPosts(string idPart, string group)
+        {
             var request = new RestRequest("people/" + idPart + "/group-memberships/" + group + "/posts:(creator,title,summary,creation-timestamp,likes,comments,site-group-post-url)");
             request.AddParameter("role", "creator");
-       //     request.AddParameter("category", "discussion");
-            request.AddParameter("start", "0");
-            request.AddParameter("count", "250");
-            // execute the request
-            return ExecuteRequest<List<Post>>(request);
-        }
-        /// <summary>
-        /// </summary>
-        public List<Post> RetrieveCurrentMemberGroupComments(string group)
-        {
-            var idPart = "~";
-            var request = new RestRequest("people/" + idPart + "/group-memberships/" + group + "/posts:(creator,title,summary,creation-timestamp,likes,comments,site-group-post-url)");
-            request.AddParameter("role", "commenter");
-//            request.AddParameter("category", "discussion");
+            //     request.AddParameter("category", "discussion");
             request.AddParameter("start", "0");
             request.AddParameter("count", "250");
             // execute the request
@@ -178,18 +216,28 @@ namespace LinkedIN
         }
 
         /// <summary>
-        /// getting the list of user group memberships
         /// </summary>
-        public List<GroupMembership> RetrieveCurrentMemberGroups()
+        public List<Post> RetrieveCurrentMemberGroupComments(string group)
         {
             var idPart = "~";
-            var request = new RestRequest("people/" + idPart + "/group-memberships:(group:(id,name,counts-by-category))");
-            request.AddParameter("membership-state", "member");
+            return RetrieveGroupPostComments(idPart, group);
+        }
+
+        public List<Post> RetrieveGroupPostCommentsByID(string USERID, string group)
+        {
+            return RetrieveGroupPostComments("id=" + USERID, group);
+        }
+
+        public List<Post> RetrieveGroupPostComments(string idPart, string group)
+        {
+            var request = new RestRequest("people/" + idPart + "/group-memberships/" + group + "/posts:(creator,title,summary,creation-timestamp,likes,comments,site-group-post-url)");
+            request.AddParameter("role", "commenter");
+            //            request.AddParameter("category", "discussion");
             request.AddParameter("start", "0");
             request.AddParameter("count", "250");
             // execute the request
-            return ExecuteRequest<List<GroupMembership>>(request);
+            return ExecuteRequest<List<Post>>(request);
         }
-        
+
     }
 }
