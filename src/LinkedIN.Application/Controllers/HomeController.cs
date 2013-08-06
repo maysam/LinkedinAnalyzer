@@ -2,6 +2,7 @@
 using LinkedIN.Model.OAuth;
 using LinkedIN.Model.People;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Web.Mvc;
 
@@ -40,12 +41,21 @@ namespace LinkedIN.Application.Controllers
 
                     var user_profile = client.RetrieveProfileById(USERID, fields);
                     Profile profile = new Profile(user_profile);
-                    var gms = client.RetrieveGroups(USERID);
-                    foreach (GroupMembership gm in gms)
+
+                    List<GroupMembership> group_memberships;
+                    try
+                    {
+                        group_memberships = client.RetrieveGroups(USERID);
+                    }
+                    catch (Exception e)
+                    {
+                        group_memberships = new List<GroupMembership>(user_profile.GroupMemberships);
+                    }
+                    foreach (GroupMembership group in group_memberships)
                     {
                         try
                         {
-                            var group_posts = client.RetrieveGroupPostsByID(USERID, gm.Key);
+                            var group_posts = client.RetrieveGroupPostsByID(USERID, group.Key);
                             foreach (var post in group_posts)
                             {
                                 profile.add(
@@ -65,7 +75,7 @@ namespace LinkedIN.Application.Controllers
                         }
                         try
                         {
-                            var group_posts = client.RetrieveGroupPostCommentsByID(USERID, gm.Key);
+                            var group_posts = client.RetrieveGroupPostCommentsByID(USERID, group.Key);
                             foreach (var post in group_posts)
                             {
                                 profile.add(
