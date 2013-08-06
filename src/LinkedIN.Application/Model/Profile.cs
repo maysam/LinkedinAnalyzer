@@ -14,13 +14,14 @@ namespace LinkedIN.Application.Model
         public void add(Data item)
         {
             int i = DateTime.Today.Month - item._date.Month + 1;
+            if (monthes.ContainsKey(i))
+                monthes[i].addStatistics(item.likes, item.comments);
+            
             var start_week = DateTime.Today;
             if(start_week.DayOfWeek != DayOfWeek.Sunday) {
                 start_week = start_week.AddDays(7 + DayOfWeek.Sunday - DateTime.Today.DayOfWeek);
             }
             int k = (int) Math.Floor((double)(start_week.Subtract(item._date).Days / 7));
-            if (monthes.ContainsKey(i))
-                monthes[i].addStatistics(item.likes, item.comments);
             if (weeks.ContainsKey(k))
                 weeks[k].addRaw(item);
         }
@@ -30,15 +31,16 @@ namespace LinkedIN.Application.Model
             this.person = person;
             if (person.NetworkStats != null)
             {
-            firstDegreeConnections = person.NetworkStats.properties[0].Value;
-            secondDegreeConnections = person.NetworkStats.properties[1].Value;
+                firstDegreeConnections = person.NetworkStats.properties[0].Value;
+                secondDegreeConnections = person.NetworkStats.properties[1].Value;
             }
             DateTime _month = DateTime.Today;
             DateTime _week = DateTime.Today;
-            if(_week.DayOfWeek != DayOfWeek.Sunday) {
+            if (_week.DayOfWeek != DayOfWeek.Sunday)
+            {
                 _week = _week.AddDays(7 + DayOfWeek.Sunday - DateTime.Today.DayOfWeek);
             }
-            
+
             monthes = new SortedDictionary<int, Data>();
             weeks = new SortedDictionary<int, Data>();
             int k = 0;
@@ -55,7 +57,11 @@ namespace LinkedIN.Application.Model
                 {
                     month.name = _month.ToString("MMMM yyyy");
                 }
-                for (int j = 1; (_week.Month == _month.Month && _week.Day > 3) || (_week.Month > _month.Month && _week.Day <= 3); j++, _week = _week.AddDays(-7))
+                for (
+                    int j = 1;
+                    (_week.Month == _month.Month && _week.Day > 3) || (_week.Month > _month.Month && _week.Day <= 3);
+                    j++, _week = _week.AddDays(-7), k++
+                    )
                 {
                     Data week = new Data(k);
                     weeks.Add(k, week);
@@ -71,7 +77,7 @@ namespace LinkedIN.Application.Model
                         week.name = _week.AddDays(-6).ToString("dd.MM.yyyy") + " - " + _week.ToString("dd.MM.yyyy");
                         week.date = _week.ToString("dd.MM.yyyy");
                     }
-                    k++;
+
                 }
             }
         }

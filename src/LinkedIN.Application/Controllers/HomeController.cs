@@ -83,7 +83,8 @@ namespace LinkedIN.Application.Controllers
                             System.Diagnostics.Debug.WriteLine(e);
                         }
                     }
-                    var types = new[] { "VIRL", "SHAR", "PRFX" };
+                    //  "VIRL" is something that I liked, clearly out of our scope here
+                    var types = new[] { "SHAR", "PRFX" };
                     foreach (var type in types)
                     {
                         var recent_updates = client.RetrieveUpdatesById(USERID, type);

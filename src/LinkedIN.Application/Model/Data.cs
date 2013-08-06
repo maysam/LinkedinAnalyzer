@@ -7,7 +7,10 @@ namespace LinkedIN.Application.Model {
 
     public class Data
     {
-        public Data() { }
+        public Data(int _index = 0)
+        {
+            index = _index;
+        }
         public Data(string str, int _likes, int _comments, string _href, long timestamp)
         {
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
@@ -18,16 +21,6 @@ namespace LinkedIN.Application.Model {
             likes = _likes;
             comments = _comments;
             href = _href;
-        }
-        public Data(int _index, int _likes, int _comments)
-        {
-            index = _index;
-            likes = _likes;
-            comments = _comments;
-        }
-        public Data(int _index)
-        {
-            index = _index;
         }
 
         public int month;
