@@ -20,7 +20,7 @@ namespace LinkedIN.Application.Controllers
                 var client = new LinkedINRestClient(consumerKey, consumerSecret, accessToken);
 				// retrieve the profile
                 try
-                {	
+                {
                     var id_field = new[] { new ProfileField("id") };
                     var tiny_user_profile = client.RetrieveCurrentMemberProfile(id_field);
                     var USERID = tiny_user_profile.Id;
@@ -48,13 +48,14 @@ namespace LinkedIN.Application.Controllers
                             var group_posts = client.RetrieveGroupPostsByID(USERID, gm.Key);
                             foreach (var post in group_posts)
                             {
-                                String content = post.title;
-                                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                                DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
-                                int likes_count = post.likes.Total;
-                                int comments_count = post.Comments.Total;
-                                var item = new GroupPost(content, likes_count, comments_count, post.SiteGroupPostUrl, updateTime);
-                                profile.add(item);
+                                profile.add(
+                                    new GroupPost(
+                                        post.title,
+                                        post.likes.Total,
+                                        post.Comments.Total,
+                                        post.SiteGroupPostUrl,
+                                        post.CreationTimestamp)
+                                    );
                             }
                         }
                         catch (Exception e)
@@ -67,11 +68,13 @@ namespace LinkedIN.Application.Controllers
                             var group_posts = client.RetrieveGroupPostCommentsByID(USERID, gm.Key);
                             foreach (var post in group_posts)
                             {
-                                String content = post.title;
-                                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                                DateTime updateTime = origin.AddMilliseconds(post.CreationTimestamp);
-                                var item = new GroupPostComment(content, 0, 0, post.SiteGroupPostUrl, updateTime);
-                                profile.add(item);
+                                profile.add(
+                                    new GroupPostComment(
+                                        post.title,
+                                        post.SiteGroupPostUrl,
+                                        post.CreationTimestamp
+                                        )
+                                    );
                             }
                         }
                         catch (Exception e)
@@ -83,40 +86,45 @@ namespace LinkedIN.Application.Controllers
                     var types = new[] { "VIRL", "SHAR", "PRFX" };
                     foreach (var type in types)
                     {
-                            var recent_updates = client.RetrieveUpdatesById(USERID, type);
-                            foreach (var update in recent_updates)
-                            {
+                        var recent_updates = client.RetrieveUpdatesById(USERID, type);
+                        foreach (var update in recent_updates)
+                        {
 
-                        try
-                        {
-                                    String content = type + " !!! " + update.ToString();
-                                    if (update.UpdateContent.Person.CurrentShare == null)
-                                    {
-                                        content = type + " ??? " + update.ToString();
-                                    }
-                                    else
+                            try
                             {
-                                        content = update.UpdateContent.Person.CurrentShare.Comment;
-                                if (content == "" || content == null)
-                                    content = update.UpdateContent.Person.CurrentShare.Content.title; // || update.UpdateContent.Person.CurrentShare.Comment;
-                                    }
-                                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                                DateTime updateTime = origin.AddMilliseconds(update.TimeStamp);
-                                    var likes_count = update.NumLikes;
-                                    if (update.Likes != null)
-                                        likes_count = update.Likes.Total;
-                                    var comments_count = 0;
-                                    if (update.UpdateComments != null)
-                                        comments_count = update.UpdateComments.Total;
-                                    var item = new UserPost(content, likes_count, comments_count, update.UpdateUrl, updateTime);
-                                    profile.add(item);
-                        }
-                        catch (Exception e)
-                        {
-                                    System.Diagnostics.Debug.WriteLine("ERROR: on line " + e.Source);
-                            System.Diagnostics.Debug.WriteLine(e);
-                                    System.Diagnostics.Debug.WriteLine(update);
+                                String content = type + " !!! " + update.ToString();
+                                if (update.UpdateContent.Person.CurrentShare == null)
+                                {
+                                    content = type + " ??? " + update.ToString();
                                 }
+                                else
+                                {
+                                    content = update.UpdateContent.Person.CurrentShare.Comment;
+                                    if (content == "" || content == null)
+                                        content = update.UpdateContent.Person.CurrentShare.Content.title; // || update.UpdateContent.Person.CurrentShare.Comment;
+                                }
+                                var likes_count = update.NumLikes;
+                                if (update.Likes != null)
+                                    likes_count = update.Likes.Total;
+                                var comments_count = 0;
+                                if (update.UpdateComments != null)
+                                    comments_count = update.UpdateComments.Total;
+
+                                profile.add(
+                                    new UserPost(
+                                        content,
+                                        likes_count,
+                                        comments_count,
+                                        update.UpdateUrl,
+                                        update.TimeStamp
+                                        )
+                                );
+                            }
+                            catch (Exception e)
+                            {
+                                System.Diagnostics.Debug.WriteLine("ERROR: on line " + e.Source);
+                                System.Diagnostics.Debug.WriteLine(e);
+                            }
                         }
                     }
                     profile.processPercentages();

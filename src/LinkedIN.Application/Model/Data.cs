@@ -8,12 +8,12 @@ namespace LinkedIN.Application.Model {
     public class Data
     {
         public Data() { }
-        public Data(string str, int _likes, int _comments, string _href, DateTime input_date)
+        public Data(string str, int _likes, int _comments, string _href, long timestamp)
         {
-
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
-            _date = input_date;
-            date = input_date.ToShortDateString();
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            _date = origin.AddMilliseconds(timestamp);            
+            date = _date.ToShortDateString();
             name = str;
             likes = _likes;
             comments = _comments;
@@ -55,21 +55,24 @@ namespace LinkedIN.Application.Model {
 
     public class UserPost : Data
     {
-        public UserPost(string str, int _likes, int _comments, string _href, DateTime _date) : base(str, _likes, _comments, _href, _date)
+        public UserPost(string content, int likes_count, int comments_count, string href, long timestamp)
+            : base(content, likes_count, comments_count, href, timestamp)
         {
         }
     }
 
     public class GroupPost : Data
     {
-        public GroupPost(string str, int _likes, int _comments, string _href, DateTime _date) : base(str, _likes, _comments, _href, _date)
+        public GroupPost(string content, int likes_count, int comments_count, string href, long timestamp)
+            : base(content, likes_count, comments_count, href, timestamp)
         {
         }
     }
 
     public class GroupPostComment : Data
     {
-        public GroupPostComment(string str, int _likes, int _comments, string _href, DateTime _date) : base(str, _likes, _comments, _href, _date)
+        public GroupPostComment(string content, string href, long timestamp)
+            : base(content, 0, 0, href, timestamp)
         {
         }
     }
