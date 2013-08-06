@@ -17,7 +17,7 @@ namespace LinkedIN.Application.Model {
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             _date = origin.AddMilliseconds(timestamp);            
             date = _date.ToShortDateString();
-            name = str;
+            content = str;
             likes = _likes;
             comments = _comments;
             href = _href;
@@ -28,7 +28,8 @@ namespace LinkedIN.Application.Model {
         public int index;
         public string date;
         public DateTime _date;
-        public string name;
+        public string content
+            , comment;
         public string href;
         public int likes = 0, comments = 0;
         public int likesPercentage, commentsPercentage;
@@ -64,9 +65,10 @@ namespace LinkedIN.Application.Model {
 
     public class GroupPostComment : Data
     {
-        public GroupPostComment(string content, string href, long timestamp)
+        public GroupPostComment(string content, string comment, string href, long timestamp)
             : base(content, 0, 0, href, timestamp)
         {
+            this.comment = comment;
         }
     }
 

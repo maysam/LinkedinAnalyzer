@@ -90,7 +90,7 @@
     <div class="accordion accordion-group" style="background-color: white">
       <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#monthes" href="#month-@month.month">
-            @month.name (@month.likes likes @formatPercentage(month.likesPercentage) @month.comments comments @formatPercentage(month.commentsPercentage))
+            @month.content (@month.likes likes @formatPercentage(month.likesPercentage) @month.comments comments @formatPercentage(month.commentsPercentage))
         </a>
       </div>
       <div id="month-@month.month" class="accordion-body collapse @(month.index == 1 ? "in" : "")">
@@ -103,7 +103,7 @@
           <div class="accordion-group">
             <div class="accordion-heading">
               <a class="accordion-toggle" data-toggle="collapse" data-parent="#parent-month-@month.month" href="#month-@month.month-week-@week.week">
-                  @week.name (@week.likes likes @formatPercentage(week.likesPercentage) @week.comments comments @formatPercentage(week.commentsPercentage))
+                  @week.content (@week.likes likes @formatPercentage(week.likesPercentage) @week.comments comments @formatPercentage(week.commentsPercentage))
               </a>
             </div>
             <div class="accordion-body collapse @(week.week == 1 ? "in" : "")" id="month-@month.month-week-@week.week">
@@ -116,14 +116,14 @@
                     @switch (activity.GetType().Name)
                     {
                         case "GroupPost":
-                            @:Group Discussion <a target="_blank" href="@activity.href">"@activity.name"</a>(@activity.likes likes, @activity.comments comments)
+                            @:Group Discussion <a target="_blank" href="@activity.href">"@activity.content"</a>(@activity.likes likes, @activity.comments comments)
                             break;
                         case "GroupPostComment":
-                            @:Comment In Group Discussion<a target="_blank" href="@activity.href">"@activity.name"</a>
+                            @:Comment "@activity.comment" In Group Discussion<a target="_blank" href="@activity.href">"@activity.content"</a>
                             break;
                         case "UserPost":
                         default:
-                            @:Status Update "@activity.name" (@activity.likes likes, @activity.comments comments)
+                            @:Status Update "@activity.content" (@activity.likes likes, @activity.comments comments)
                             break;
                     }
                   </div>

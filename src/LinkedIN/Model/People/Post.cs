@@ -1,4 +1,5 @@
-﻿namespace LinkedIN.Model.People
+﻿using System.Collections.ObjectModel;
+namespace LinkedIN.Model.People
 {
     /// <summary>
     /// </summary>
@@ -20,7 +21,7 @@
 
         /// <summary>
         /// </summary>
-        public Comments Comments { get; set; }
+        public Collection<Comment> Comments { get; set; }
         
         /// <summary>
         /// </summary>

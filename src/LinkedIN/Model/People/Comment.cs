@@ -17,6 +17,6 @@
 
         /// <summary>
         /// </summary>
-        public Creator Creator { get; set; }
+        public Person Creator { get; set; }
     }
 }

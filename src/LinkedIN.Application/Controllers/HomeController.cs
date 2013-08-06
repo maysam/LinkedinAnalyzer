@@ -62,9 +62,10 @@ namespace LinkedIN.Application.Controllers
                                     new GroupPost(
                                         post.title,
                                         post.likes.Total,
-                                        post.Comments.Total,
+                                        post.Comments.Count,
                                         post.SiteGroupPostUrl,
-                                        post.CreationTimestamp)
+                                        post.CreationTimestamp
+                                        )
                                     );
                             }
                         }
@@ -78,13 +79,20 @@ namespace LinkedIN.Application.Controllers
                             var group_posts = client.RetrieveGroupPostCommentsByID(USERID, group.Key);
                             foreach (var post in group_posts)
                             {
-                                profile.add(
-                                    new GroupPostComment(
-                                        post.title,
-                                        post.SiteGroupPostUrl,
-                                        post.CreationTimestamp
-                                        )
-                                    );
+                                foreach (var comment in post.Comments)
+                                {
+                                    if (comment.Creator.Id == USERID)
+                                    {
+                                        profile.add(
+                                            new GroupPostComment(
+                                                post.title,
+                                                comment.Text,
+                                                post.SiteGroupPostUrl,
+                                                comment.CreationTimestamp
+                                                )
+                                            );
+                                    }
+                                }
                             }
                         }
                         catch (Exception e)

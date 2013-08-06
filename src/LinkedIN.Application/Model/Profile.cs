@@ -51,11 +51,11 @@ namespace LinkedIN.Application.Model
                 month.month = _month.Month;
                 if (i == 1)
                 {
-                    month.name = "Current Month";
+                    month.content = "Current Month";
                 }
                 else
                 {
-                    month.name = _month.ToString("MMMM yyyy");
+                    month.content = _month.ToString("MMMM yyyy");
                 }
                 for (
                     int j = 1;
@@ -69,12 +69,12 @@ namespace LinkedIN.Application.Model
                     week.week = j;
                     if (j == 1 && i == 1)
                     {
-                        week.name = "Current Week";
+                        week.content = "Current Week";
                         week.date = DateTime.Today.ToString("dd.MM.yyyy");
                     }
                     else
                     {
-                        week.name = _week.AddDays(-6).ToString("dd.MM.yyyy") + " - " + _week.ToString("dd.MM.yyyy");
+                        week.content = _week.AddDays(-6).ToString("dd.MM.yyyy") + " - " + _week.ToString("dd.MM.yyyy");
                         week.date = _week.ToString("dd.MM.yyyy");
                     }
 
