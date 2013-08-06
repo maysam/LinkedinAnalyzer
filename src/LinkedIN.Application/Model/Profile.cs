@@ -13,8 +13,12 @@ namespace LinkedIN.Application.Model
     {
         public void add(Data item)
         {
-            int i = DateTime.Now.Month - item._date.Month + 1;
-            int k = (int)Math.Floor((double)(DateTime.Now.Subtract(item._date).Days / 7));
+            int i = DateTime.Today.Month - item._date.Month + 1;
+            var start_week = DateTime.Today;
+            if(start_week.DayOfWeek != DayOfWeek.Sunday) {
+                start_week = start_week.AddDays(7 + DayOfWeek.Sunday - DateTime.Today.DayOfWeek);
+            }
+            int k = (int) Math.Floor((double)(start_week.Subtract(item._date).Days / 7));
             if (monthes.ContainsKey(i))
                 monthes[i].addStatistics(item.likes, item.comments);
             if (weeks.ContainsKey(k))
@@ -29,8 +33,12 @@ namespace LinkedIN.Application.Model
             firstDegreeConnections = person.NetworkStats.properties[0].Value;
             secondDegreeConnections = person.NetworkStats.properties[1].Value;
             }
-            DateTime _month = DateTime.Now;
-            DateTime _week = DateTime.Now;
+            DateTime _month = DateTime.Today;
+            DateTime _week = DateTime.Today;
+            if(_week.DayOfWeek != DayOfWeek.Sunday) {
+                _week = _week.AddDays(7 + DayOfWeek.Sunday - DateTime.Today.DayOfWeek);
+            }
+            
             monthes = new SortedDictionary<int, Data>();
             weeks = new SortedDictionary<int, Data>();
             int k = 0;
@@ -53,14 +61,15 @@ namespace LinkedIN.Application.Model
                     weeks.Add(k, week);
                     week.month = _month.Month;
                     week.week = j;
-                    week.date = _week.ToString("dd.MM.yyyy");
                     if (j == 1 && i == 1)
                     {
                         week.name = "Current Week";
+                        week.date = DateTime.Today.ToString("dd.MM.yyyy");
                     }
                     else
                     {
                         week.name = _week.AddDays(-6).ToString("dd.MM.yyyy") + " - " + _week.ToString("dd.MM.yyyy");
+                        week.date = _week.ToString("dd.MM.yyyy");
                     }
                     k++;
                 }
